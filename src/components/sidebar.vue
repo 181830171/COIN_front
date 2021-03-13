@@ -24,6 +24,8 @@
 </template>
 
 <script>
+    //import {writeJson} from "../util/addNode";
+
     export default {
         name: "sidebar",
         props:{
@@ -35,7 +37,18 @@
         methods:{
             close(){
                 this.$parent.isAddSeen=false
-            }
+            },
+            // handler(){
+            //     var nodes={
+            //         "name":"node09",
+            //         "des":"nodedes09",
+            //         "sysbolSize":70,
+            //         "category":0,
+            //         "x":30,
+            //         "y":60
+            //     }
+            //     writeJson(nodes);
+            // }
         }
     }
 </script>

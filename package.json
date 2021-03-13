@@ -1,13 +1,15 @@
-{  "name": "coin-frontend",
+{
+  "name": "coin-frontend",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --mode production",
     "build": "vue-cli-service build"
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "echarts": "^4.1.0",
+    "echarts": "^5.0.2",
+    "jquery": "^3.6.0",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
     "vuex": "^4.0.0-0"
