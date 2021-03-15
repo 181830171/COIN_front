@@ -34,7 +34,7 @@ export default {
     var links1;
     var category1;
     var categories = [];
-    $.get('data.json').done(function (data) {
+    $.get('test1_result.json').done(function (data) {
       nodes=data.nodes;
       links1=data.links;
       category1=data.categories;
@@ -175,7 +175,7 @@ export default {
 
     function initNode(){
       //获取原始节点位置，并在上面覆盖透明的圆
-      $.get('data.json').done(function (data) {
+      $.get('test1_result.json').done(function (data) {
         myChart.setOption({
           graphic: data.nodes.map(function (item, dataIndex) {
             return {
