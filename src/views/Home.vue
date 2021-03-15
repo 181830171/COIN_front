@@ -2,6 +2,7 @@
 
   <navigator/>
 <!--  <sidebar/>-->
+
   <div style="margin-left:16%">
 
     <div class="w3-container" id="main" style="width:1000px;height:800px" ref="main">
@@ -15,10 +16,14 @@
 <script>
 // @ is an alias to /src
 //import HelloWorld from '@/components/HelloWorld.vue'
+import {mapActions, mapGetters, mapState} from "vuex";
+
 let echarts=require('echarts')
 import sidebar from "../components/sidebar";
 import navigator from "../components/navigator";
 import $ from "jquery";
+import {toRaw} from "@vue/reactivity";
+import {getListAllAPI} from "@/api/NeoEntity";
 
 export default {
   name: 'Home',
@@ -26,20 +31,46 @@ export default {
     Navigator,
     //HelloWorld
     sidebar,navigator
-  },mounted() {
+  },
+
+  computed: {
+    ...mapGetters([
+        'allEntitiesAndRelations'
+    ])
+  },
+  methods:{
+    ...mapActions([
+      'getListAll',
+      'getNeoEntityById',
+      'addNeoEntity',
+    ]),
+
+
+
+  },
+  created() {
+      this.getListAll();
+  },
+  mounted() {
+    var test=toRaw(this.$store.state.NeoEntity)
+    console.log(test)
     console.log(process.env.NODE_ENV)
     var myChart = echarts.init(document.getElementById('main'));
     myChart.showLoading();
     var nodes;
-    var links1;
-    var category1;
-    var categories = [];
-    $.get('data.json').done(function (data) {
-      nodes=data.nodes;
-      links1=data.links;
-      category1=data.categories;
-    });
+
+     var links1;
+     var category1;
+     var categories = [];
+    // $.get('test1_result.json').done(function (data) {
+    //   nodes=data.nodes;
+    //   links1=data.links;
+    //   category1=data.categories;
+    // });
     setTimeout(function (){
+      nodes=test.allEntitiesAndRelations.nodes;
+      links1=test.allEntitiesAndRelations.links;
+      category1=test.allEntitiesAndRelations.categories;
       for (var i = 0; i < category1; i++) {
         categories[i] = {
           name: '类目' + i
@@ -135,7 +166,7 @@ export default {
 
       };
       myChart.setOption(option);
-      console.log(nodes);
+      console.log(option);
       initNode();
 
       myChart.on('restore',function () {
@@ -149,7 +180,53 @@ export default {
 
     },3000);
 
+      function initNode(){
+        //获取原始节点位置，并在上面覆盖透明的圆
+        //this.getListAll();
+        //setTimeout(function () {
+          //let test2=toRaw(this.$store.state.NeoEntity)
+          myChart.setOption({
+            graphic: nodes.map(function (item, dataIndex) {
+              return {
+                type: 'circle',
+                position: myChart.convertToPixel('series', [item.x, item.y]),
+                shape: {
+                  r: item.symbolSize / 2
+                },
+                invisible: true,//透明
+                draggable: true,
+                ondrag: function (dx, dy) {
+                  onPointDragging(dataIndex, [this.x, this.y]);
+                },
+                z: 100
+              }
+            })
+          });
+       // },2000)
 
+      }
+    // initNode(()=>{this.getListAll()
+    //   //setTimeout(function () {
+    //     let test2=toRaw(this.$store.state.NeoEntity)
+    //     myChart.setOption({
+    //       graphic: test2.allEntitiesAndRelations.nodes.map(function (item, dataIndex) {
+    //         return {
+    //           type: 'circle',
+    //           position: myChart.convertToPixel('series', [item.x, item.y]),
+    //           shape: {
+    //             r: item.symbolSize / 2
+    //           },
+    //           invisible: true,//透明
+    //           draggable: true,
+    //           ondrag: function (dx, dy) {
+    //             onPointDragging(dataIndex, [this.x, this.y]);
+    //           },
+    //           z: 100
+    //         }
+    //       })
+    //     });
+    //   },2000)
+    // })
     function onPointDragging(dataIndex, pos) {
       //修改节点的x,y值并重新绘制
       nodes[dataIndex].x = myChart.convertFromPixel('series', pos)[0];
@@ -173,28 +250,14 @@ export default {
       });
     }
 
-    function initNode(){
-      //获取原始节点位置，并在上面覆盖透明的圆
-      $.get('data.json').done(function (data) {
-        myChart.setOption({
-          graphic: data.nodes.map(function (item, dataIndex) {
-            return {
-              type: 'circle',
-              position: myChart.convertToPixel('series', [item.x,item.y]),
-              shape: {
-                r: item.symbolSize / 2
-              },
-              invisible: true,//透明
-              draggable: true,
-              ondrag: function (dx, dy) {
-                onPointDragging(dataIndex, [this.x, this.y]);
-              },
-              z: 100
-            }
-          })
-        });
-      })
-    }
+
+
+
+
+
+
+
+
 
   }
 
