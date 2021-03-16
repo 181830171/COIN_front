@@ -52,8 +52,9 @@ const NeoEntity={
         addNeoEntity: async ({state,commit,dispatch},data)=>{
             const res=await addNeoEntityAPI(data)
             if(res){
-                dispatch('getListAll')
                 alert("成功")
+                dispatch('getListAll')
+                console.log(state.allEntitiesAndRelations)
             }else{
                 alert("失败极了")
             }

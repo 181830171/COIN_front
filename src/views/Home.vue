@@ -1,12 +1,16 @@
 <template>
 
   <navigator/>
-  <div style="margin-left:16%">
+<!--  <sidebar/>-->
 
-    <div class="w3-container" id="main" style="width:1000px;height:800px" ref="main"></div>
+  <div style="margin-left:20%">
+
+    <div class="w3-container" id="main" style="width:1000px;height:800px" ref="main">
+      <!--        <h2>侧边栏中的下拉菜单</h2>-->
+      <!--        <p>在此示例中，我们在侧边栏中添加了一个下拉菜单。</p>-->
+      <!--        <p>注意插入符号下拉图标，我们用它来指示这是一个下拉菜单。</p>-->
     </div>
-
-
+    </div>
 </template>
 
 <script>
@@ -25,6 +29,7 @@ export default {
   name: 'Home',
   components: {
     Navigator,
+    //HelloWorld
     sidebar,navigator
   },
 
@@ -48,7 +53,6 @@ export default {
   },
   mounted() {
     var test=toRaw(this.$store.state.NeoEntity)
-    console.log(toRaw(this.allEntitiesAndRelations))
     console.log(test)
     console.log(process.env.NODE_ENV)
     var myChart = echarts.init(document.getElementById('main'));
@@ -58,7 +62,11 @@ export default {
      var links1;
      var category1;
      var categories = [];
-
+    // $.get('test1_result.json').done(function (data) {
+    //   nodes=data.nodes;
+    //   links1=data.links;
+    //   category1=data.categories;
+    // });
     setTimeout(function (){
       nodes=test.allEntitiesAndRelations.nodes;
       links1=test.allEntitiesAndRelations.links;
@@ -148,9 +156,6 @@ export default {
               textStyle: {}
             }
           },
-
-          //鼠标局部高亮
-          focusNodeAdjacency : true,
           // // 数据,需要从外面读取
           data:nodes,
           links:links1,
@@ -176,13 +181,17 @@ export default {
     },3000);
 
       function initNode(){
+        //获取原始节点位置，并在上面覆盖透明的圆
+        //this.getListAll();
+        //setTimeout(function () {
+          //let test2=toRaw(this.$store.state.NeoEntity)
           myChart.setOption({
             graphic: nodes.map(function (item, dataIndex) {
               return {
                 type: 'circle',
                 position: myChart.convertToPixel('series', [item.x, item.y]),
                 shape: {
-                  r: item.symbolSize / 3
+                  r: item.symbolSize / 2
                 },
                 invisible: true,//透明
                 draggable: true,
@@ -193,9 +202,31 @@ export default {
               }
             })
           });
+       // },2000)
 
       }
-
+    // initNode(()=>{this.getListAll()
+    //   //setTimeout(function () {
+    //     let test2=toRaw(this.$store.state.NeoEntity)
+    //     myChart.setOption({
+    //       graphic: test2.allEntitiesAndRelations.nodes.map(function (item, dataIndex) {
+    //         return {
+    //           type: 'circle',
+    //           position: myChart.convertToPixel('series', [item.x, item.y]),
+    //           shape: {
+    //             r: item.symbolSize / 2
+    //           },
+    //           invisible: true,//透明
+    //           draggable: true,
+    //           ondrag: function (dx, dy) {
+    //             onPointDragging(dataIndex, [this.x, this.y]);
+    //           },
+    //           z: 100
+    //         }
+    //       })
+    //     });
+    //   },2000)
+    // })
     function onPointDragging(dataIndex, pos) {
       //修改节点的x,y值并重新绘制
       nodes[dataIndex].x = myChart.convertFromPixel('series', pos)[0];
