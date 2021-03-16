@@ -1,8 +1,14 @@
 <template>
-    <ul>
+    <ul class="all">
         <li class='title' style="float: left">COIN</li>
         <li class="btn"><a href="#">Edit</a></li>
-        <li class="btn"><a href="#" @click="add()">Add</a></li>
+        <li class="btn">
+            <a href="#" class="add" @click="add()">Add</a>
+<!--            <ul class="addOption">-->
+<!--                <li class="insideAdd"><a>新增关系</a></li>-->
+<!--                <li class="insideAdd"><a>新增实体</a></li>-->
+<!--            </ul>-->
+        </li>
         <li class="btn"><a href="#">Search</a></li>
     </ul>
     <sidebar id="side" :seen="isAddSeen" ref="sidebar"/>
@@ -27,7 +33,7 @@
 </script>
 
 <style scoped>
-    ul {
+    .all {
         list-style-type: none;
         margin: 0;
         padding: 0;
@@ -35,7 +41,7 @@
         background-color: #333;
     }
 
-    li {
+    li.btn {
         float: right;
     }
 
@@ -62,4 +68,11 @@
     li a:hover {
         background-color: #111;
     }
+    .addOption{
+        position:absolute;
+        top:40px;
+        left:0px;
+    }
+
+
 </style>

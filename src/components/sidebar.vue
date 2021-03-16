@@ -1,9 +1,21 @@
 <template>
-    <div id="index" class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width: 16%">
+    <div id="index" class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width: 18%">
     </div>
-
-    <div id="add-new-relations" class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width:16%" v-show="seen">
+    <div id="addSomething" class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width: 18%;font-size: 22px" v-show="seen">
         <p class="w3-bar-item w3-button w3-xlarge" @Click="close()">←</p>
+        <a class="w3-bar-item w3-button " @click="addEntity()">添加实体</a>
+        <a class="w3-bar-item w3-button " @click="addRelation()">添加关系</a>
+    </div>
+    <div id="add-new-entity" class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width:18%" v-show="isaddEntity">
+        <p class="w3-bar-item w3-button w3-xlarge" @Click="back()">←</p>
+        <p class="w3-bar-item w3-button hover-none">请输入想要添加的实体</p>
+        <input class="w3-bar-item" id="object" type="text" sytle="padding：12px,16px;margin-bottom:10px">
+        <p class="w3-bar-item w3-button hover-none">添加实体描述</p>
+        <input class="w3-bar-item" id="description" type="text" sytle="padding：12px,16px;margin-bottom:10px">
+        <button id="add-new-entity-button" style="text-align: center" @click="addHandler()">添加</button>
+    </div>
+    <div id="add-new-relations" class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width:18%" v-show="isaddRelation">
+        <p class="w3-bar-item w3-button w3-xlarge" @Click="back()">←</p>
         <p class="w3-bar-item w3-button hover-none">请输入想要添加的实体1</p>
         <input class="w3-bar-item" id="object1" type="text" sytle="padding：12px,16px;margin-bottom:10px">
         <p class="w3-bar-item w3-button hover-none">请输入想要添加的实体2</p>
@@ -19,13 +31,15 @@
     export default {
         name: "sidebar",
         props:{
-            seen:{type:Boolean,default:false}
+            seen:{type:Boolean,default:false},
         },
         data(){
             return {
                 source:"",
                 destin:"",
-                relation:""
+                relation:"",
+                isaddEntity:false,
+                isaddRelation:false
             }
         },
       computed: {
@@ -54,6 +68,16 @@
                 //this.set_addNeoEntityParams(data)
                 this.addNeoEntity({name:this.data.source,des:""})
 
+            },
+            addRelation(){
+                this.isaddRelation=true
+            },
+            addEntity(){
+                this.isaddEntity=true
+            },
+            back(){
+                this.isaddEntity=false
+                this.isaddRelation=false
             }
         }
     }
