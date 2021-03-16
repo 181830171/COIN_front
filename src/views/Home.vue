@@ -3,7 +3,7 @@
   <navigator/>
 <!--  <sidebar/>-->
 
-  <div style="margin-left:16%">
+  <div style="margin-left:20%">
 
     <div class="w3-container" id="main" style="width:1000px;height:800px" ref="main">
       <!--        <h2>侧边栏中的下拉菜单</h2>-->
