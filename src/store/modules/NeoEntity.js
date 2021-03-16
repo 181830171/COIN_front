@@ -12,7 +12,8 @@ const NeoEntity={
         allEntitiesAndRelations:{},
         addNeoEntityParams:{
             name:"",
-            des:""
+            des:"",
+            category:0
         },
         currentNeoEntity:{},
         addRelateByIdParams:{
@@ -54,7 +55,7 @@ const NeoEntity={
             if(res){
                 alert("成功")
                 dispatch('getListAll')
-                console.log(state.allEntitiesAndRelations)
+                //console.log(state.allEntitiesAndRelations)
             }else{
                 alert("失败极了")
             }
