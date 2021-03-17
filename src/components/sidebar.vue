@@ -75,6 +75,7 @@
               }
               console.log("hehe")
               this.addNeoEntity(data)
+              this.$parent.$parent.draw()
             },
             addHandler(){
                 // const data={

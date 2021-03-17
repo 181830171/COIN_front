@@ -32,7 +32,6 @@ const NeoEntity={
         },
         set_listAll:function(state,data){
             state.allEntitiesAndRelations=data;
-            console.log("data:",data);
         },
         set_currentNeoEntity:function (state,data){
             state.currentNeoEntity=data;
@@ -43,7 +42,6 @@ const NeoEntity={
         getListAll: async ({state,commit})=>{
             const res= await getListAllAPI()
             if(res){
-                console.log("res:",res);
                 commit('set_listAll',res)
             }else{
                 alert("大失败！")
@@ -54,7 +52,6 @@ const NeoEntity={
             if(res){
                 alert("成功")
                 dispatch('getListAll')
-                console.log(state.allEntitiesAndRelations)
             }else{
                 alert("失败极了")
             }
