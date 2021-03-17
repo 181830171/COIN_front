@@ -1,7 +1,7 @@
 <template>
     <ul class="all">
         <li class='title' style="float: left">COIN</li>
-        <li class="btn"><a href="#">Edit</a></li>
+        <li class="btn"><a href="#" @click="edit()">Edit</a></li>
         <li class="btn">
             <a href="#" class="add" @click="add()">Add</a>
 <!--            <ul class="addOption">-->
@@ -12,21 +12,29 @@
         <li class="btn"><a href="#">Search</a></li>
     </ul>
     <sidebar id="side" :seen="isAddSeen" ref="sidebar"/>
+    <editbar ref="editside" :seen="isEditSeen" />
 </template>
 
 <script>
     import sidebar from "./sidebar";
+    import Editbar from "./editbar";
     export default {
         name: "navigator",
         data(){
-            return {isAddSeen:false}
+            return {isAddSeen:false,isEditSeen:false}
         },
         components:{
+            Editbar,
             sidebar
         },
         methods:{
             add(){
                this.isAddSeen=true
+                this.isEditSeen=false
+            },
+            edit(){
+                this.isEditSeen=true
+                this.isAddSeen=false
             }
         }
     }

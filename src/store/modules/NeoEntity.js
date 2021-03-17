@@ -20,7 +20,8 @@ const NeoEntity={
             from:0,
             to:0,
             isSolid:true,
-            des:""
+            des:"",
+            name:""
         }
     },
     mutations:{
@@ -61,7 +62,7 @@ const NeoEntity={
             }
         },
         addRelateById: async ({state,commit,dispatch},data)=>{
-            const res=await addRelateByIdAPI(data.from,data.to,data.isSolid,data.des)
+            const res=await addRelateByIdAPI(data.from,data.to,data.isSolid,data.des,data.name)
             if(res){
                 dispatch('getListAll')
                 //commit('set_addRelateById',data)
@@ -71,7 +72,7 @@ const NeoEntity={
             }
         },
         deleteNeoEntityById:async ({state,dispatch},data)=>{
-            const res=await deleteNeoEntityByIdAPI(data);
+            const res=await deleteNeoEntityByIdAPI(data.id);
             if(res){
                 dispatch('getListAll')
                 alert("成功删除节点")

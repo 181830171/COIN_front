@@ -1,23 +1,24 @@
 <template>
 
-  <navigator/>
+  <navigator ref="nav"/>
 <!--  <sidebar/>-->
 
   <div style="margin-left:20%">
 
-    <div class="w3-container" id="main" style="width:1000px;height:800px" ref="main">
-      <!--        <h2>侧边栏中的下拉菜单</h2>-->
-      <!--        <p>在此示例中，我们在侧边栏中添加了一个下拉菜单。</p>-->
-      <!--        <p>注意插入符号下拉图标，我们用它来指示这是一个下拉菜单。</p>-->
+    <div class="w3-container" id="main" style="width:1000px;height:800px" ref="main" @click="windowopen()">
+<!--              <h2>侧边栏中的下拉菜单</h2>-->
+<!--              <p>在此示例中，我们在侧边栏中添加了一个下拉菜单。</p>-->
+<!--              <p>注意插入符号下拉图标，我们用它来指示这是一个下拉菜单。</p>-->
     </div>
     </div>
+<!--  <windowmodual :v-show="openwindow"/>-->
 </template>
 
 <script>
 // @ is an alias to /src
 //import HelloWorld from '@/components/HelloWorld.vue'
 import {mapActions, mapGetters, mapState} from "vuex";
-
+import windowmodual from "../components/windowModual";
 let echarts=require('echarts')
 import sidebar from "../components/sidebar";
 import navigator from "../components/navigator";
@@ -31,6 +32,9 @@ export default {
     Navigator,
     //HelloWorld
     sidebar,navigator
+  },
+  data(){
+    return {openwindow:true}
   },
 
 
@@ -113,9 +117,9 @@ export default {
           series: [{
             id:'COIN',
             type: 'graph', // 类型:关系图
-            //layout: 'force', //图的布局，类型为力导图
+            layout: 'force', //图的布局，类型为力导图
             //layout:'circular',//环形布局
-            layout: 'none',
+            //layout: 'none',
             symbolSize: 40, // 调整节点的大小
             roam: true, // 是否开启鼠标缩放和平移漫游。默认不开启。如果只想要开启缩放或者平移,可以设置成 'scale' 或者 'move'。设置成 true 为都开启
             edgeSymbol: ['circle', 'arrow'],
@@ -124,7 +128,7 @@ export default {
             edgeLabel: {
               normal: {
                 textStyle: {
-                  fontSize: 20
+                  fontSize: 14
                 },
                 show: true,
                 formatter: function (x) {
@@ -225,30 +229,27 @@ export default {
           })
         });
       }
+    },
+    windowopen(){
+      //这里点击窗口可以打开侧边栏，希望可以通过点击具体的点或者关系获得这个关系或者点的id
+      //如果是点则isEntity=true,传入相应的id
+      //如果是关系则isEntity=false，在from和to传入两个端点的id
+      this.$refs.nav.edit()
+      this.$refs.nav.$refs.editside.isEntity=false
+      this.$refs.nav.$refs.editside.from=null
+      this.$refs.nav.$refs.editside.to=null
+      this.$refs.nav.$refs.editside.id=6
     }
-
-
-
   },
   created() {
       this.getListAll();
   },
   mounted() {
     this.draw()
+    const cav=document.getElementById("main")
+    //这里是在画布上绑定单击事件打开侧边栏，理想情况是双击某个点打开侧边栏
+    cav.addEventListener("click",this.windowopen)
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
 

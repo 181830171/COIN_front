@@ -37,11 +37,11 @@ export function getNeoEntityByIdAPI(id){
 }
 
 //添加关系
-export function addRelateByIdAPI(from,to,isSolid,des){
+export function addRelateByIdAPI(from,to,isSolid,des,name){
     return axios({
         url:'/addRelates',
         method:'POST',
-        params:{from:from,to:to,isSolid:isSolid,des:des}
+        params:{from:from,to:to,isSolid:isSolid,des:des,name:name}
     })
 }
 

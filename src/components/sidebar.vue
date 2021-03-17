@@ -23,12 +23,12 @@
         <p class="w3-bar-item w3-button w3-xlarge" @Click="back()">←</p>
         <p class="w3-bar-item w3-button hover-none">请输入想要添加的实体1</p>
         <select class="w3-bar-item" id="entity" v-model="source">
-            <option v-for="node in allEntitiesAndRelations.nodes" :value="node.id">{{node.name}}</option>
+            <option v-for="node in allEntitiesAndRelations.nodes" :value="node.nodeId">{{node.name}}</option>
         </select>
 <!--        <input class="w3-bar-item" id="object1" type="select" sytle="padding：12px,16px;margin-bottom:10px">-->
         <p class="w3-bar-item w3-button hover-none">请输入想要添加的实体2</p>
         <select class="w3-bar-item" id="entity2" v-model="destin">
-            <option v-for="node in allEntitiesAndRelations.nodes" :value="node.id">{{node.name}}</option>
+            <option v-for="node in allEntitiesAndRelations.nodes" :value="node.nodeId">{{node.name}}</option>
         </select>
 <!--        <input class="w3-bar-item" id="object2" type="text" sytle="padding：12px,16px;margin-bottom:10px">-->
         <p class="w3-bar-item w3-button hover-none">请选择关系类型</p>
@@ -54,8 +54,8 @@
             return {
                 name:"",
                 des:"",
-                source:0,
-                destin:0,
+                source:null,
+                destin:null,
                 cate:0,
                 relation:"",
                 isSolid:true,
@@ -87,19 +87,26 @@
                   des:this.des,
                   category:this.cate
               }
-              console.log("hehe")
               this.addNeoEntity(data)
               this.$parent.$parent.draw()
+              this.name=""
+              this.des=""
+              this.cate=1
             },
             addRelateHandler(){
                 const data={
                     from:this.source,
                     to:this.destin,
                     isSolid:this.isSolid,
-                    des:this.relation
+                    des:"",
+                    name:this.relation
                 }
                 console.log(data)
                 this.addRelateById(data)
+                this.$parent.$parent.draw()
+                this.source=null
+                this.destin=null
+                this.relation=""
             },
             addRelation(){
                 this.isaddRelation=true
