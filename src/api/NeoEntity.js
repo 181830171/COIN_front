@@ -14,7 +14,7 @@ export function deleteNeoEntityByIdAPI(id){
     return axios({
         url:`/delete`,
         method:'GET',
-        id
+        params:{id:id},
     })
 }
 

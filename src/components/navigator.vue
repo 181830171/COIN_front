@@ -1,7 +1,7 @@
 <template>
     <ul class="all">
         <li class='title' style="float: left">COIN</li>
-        <li class="btn"><a href="#" @click="edit()">Edit</a></li>
+        <li class="btn"><a href="#" @click="export2JSON()">Export</a></li>
         <li class="btn">
             <a href="#" class="add" @click="add()">Add</a>
 <!--            <ul class="addOption">-->
@@ -18,6 +18,8 @@
 <script>
     import sidebar from "./sidebar";
     import Editbar from "./editbar";
+    import {mapActions,mapGetters} from 'vuex';
+    import {toRaw} from "@vue/reactivity";
     export default {
         name: "navigator",
         data(){
@@ -28,14 +30,33 @@
             sidebar
         },
         methods:{
-            add(){
-               this.isAddSeen=true
-                this.isEditSeen=false
-            },
-            edit(){
-                this.isEditSeen=true
-                this.isAddSeen=false
-            }
+          ...mapGetters([
+            'allEntitiesAndRelations'
+        ]),
+        add(){
+           this.isAddSeen=true
+            this.isEditSeen=false
+        },
+        edit(){
+            this.isEditSeen=true
+            this.isAddSeen=false
+        },
+        export2JSON(){
+          var test=toRaw(this.$store.state.NeoEntity)
+          alert("开始导出JSON文件，请耐心等候！")
+          var eleLink = document.createElement('a');
+          eleLink.download = 'data.json';
+          eleLink.style.display = 'none';
+          // 字符内容转变成blob地址
+          var blob = new Blob([JSON.stringify(test.allEntitiesAndRelations)]);
+          eleLink.href = URL.createObjectURL(blob);
+          // 触发点击
+          document.body.appendChild(eleLink);
+          eleLink.click();
+          // 然后移除
+          document.body.removeChild(eleLink);
+
+        }
         }
     }
 </script>

@@ -6,25 +6,20 @@
   <div style="margin-left:20%">
 
     <div class="w3-container" id="main" style="width:1000px;height:800px" ref="main" @click="windowopen()">
-<!--              <h2>侧边栏中的下拉菜单</h2>-->
-<!--              <p>在此示例中，我们在侧边栏中添加了一个下拉菜单。</p>-->
-<!--              <p>注意插入符号下拉图标，我们用它来指示这是一个下拉菜单。</p>-->
     </div>
     </div>
-<!--  <windowmodual :v-show="openwindow"/>-->
 </template>
 
 <script>
 // @ is an alias to /src
-//import HelloWorld from '@/components/HelloWorld.vue'
+
 import {mapActions, mapGetters, mapState} from "vuex";
 import windowmodual from "../components/windowModual";
 let echarts=require('echarts')
 import sidebar from "../components/sidebar";
 import navigator from "../components/navigator";
-import $ from "jquery";
 import {toRaw} from "@vue/reactivity";
-import {getListAllAPI} from "@/api/NeoEntity";
+
 
 export default {
   name: 'Home',
@@ -56,15 +51,10 @@ export default {
       var myChart = echarts.init(document.getElementById('main'));
       myChart.showLoading();
       var nodes;
-
       var links1;
       var category1;
       var categories = [];
-      // $.get('test1_result.json').done(function (data) {
-      //   nodes=data.nodes;
-      //   links1=data.links;
-      //   category1=data.categories;
-      // });
+      const _this=this;
       setTimeout(function (){
         nodes=test.allEntitiesAndRelations.nodes;
         links1=test.allEntitiesAndRelations.links;
@@ -167,7 +157,6 @@ export default {
 
         };
         myChart.setOption(option);
-        console.log(option);
         initNode();
 
         myChart.on('restore',function () {
@@ -179,19 +168,47 @@ export default {
           updatePosition();
         });
 
+
+        myChart.on('click', function (params) {
+          if (params.dataType == 'node') {
+            //单击节点的事件
+            _this.windowopen();
+            //将参数传给editbar组件
+            _this.$refs.nav.$refs.editside.originName=params.data.name;
+            _this.$refs.nav.$refs.editside.isEntity=true;
+            _this.$refs.nav.$refs.editside.id=params.data.nodeId;
+            _this.$refs.nav.$refs.editside.category=params.data.category;
+            _this.$refs.nav.$refs.editside.symbolSize=params.data.symbolSize;
+            _this.$refs.nav.$refs.editside.x=params.data.x;
+            _this.$refs.nav.$refs.editside.y=params.data.y;
+
+            console.log(params.name);
+            console.log(params.data.nodeId);
+            console.log(params)
+          }else if(params.dataType=='edge'){
+            //单击关系的事件
+            _this.windowopen();
+            _this.$refs.nav.$refs.editside.originName=params.data.name;
+            _this.$refs.nav.$refs.editside.isEntity=false
+            console.log(params.data.name);
+            console.log(params.data.id);
+            console.log(params)
+          }
+        });
+
+
+
       },3000);
 
       function initNode(){
-        //获取原始节点位置，并在上面覆盖透明的圆
-        //this.getListAll();
-        //setTimeout(function () {
-        //let test2=toRaw(this.$store.state.NeoEntity)
+        //该方法用于初始化覆盖在节点上的透明的圆，以便于拖动操作
         myChart.setOption({
           graphic: nodes.map(function (item, dataIndex) {
             return {
               type: 'circle',
               position: myChart.convertToPixel('series', [item.x, item.y]),
               shape: {
+                //只覆盖内圆部分，这样在外圆部分可以触发鼠标点击，悬浮事件
                 r: item.symbolSize / 3
               },
               invisible: true,//透明
@@ -203,12 +220,11 @@ export default {
             }
           })
         });
-        // },2000)
 
       }
 
       function onPointDragging(dataIndex, pos) {
-        //修改节点的x,y值并重新绘制
+        //每次拖动时，修改节点的x,y值并重新绘制
         nodes[dataIndex].x = myChart.convertFromPixel('series', pos)[0];
         nodes[dataIndex].y = myChart.convertFromPixel('series', pos)[1];
         myChart.setOption({
@@ -220,7 +236,7 @@ export default {
       }
 
       function updatePosition() {
-        //更新覆盖在节点上的值
+        //更新覆盖在节点上的透明圆的位置
         myChart.setOption({
           graphic: nodes.map(function (item, dataIndex) {
             return {
@@ -231,14 +247,9 @@ export default {
       }
     },
     windowopen(){
-      //这里点击窗口可以打开侧边栏，希望可以通过点击具体的点或者关系获得这个关系或者点的id
-      //如果是点则isEntity=true,传入相应的id
-      //如果是关系则isEntity=false，在from和to传入两个端点的id
+      //这里可以打开侧边栏，删除或修改具体的点或者关系
       this.$refs.nav.edit()
-      this.$refs.nav.$refs.editside.isEntity=false
-      this.$refs.nav.$refs.editside.from=null
-      this.$refs.nav.$refs.editside.to=null
-      this.$refs.nav.$refs.editside.id=6
+
     }
   },
   created() {
@@ -246,9 +257,6 @@ export default {
   },
   mounted() {
     this.draw()
-    const cav=document.getElementById("main")
-    //这里是在画布上绑定单击事件打开侧边栏，理想情况是双击某个点打开侧边栏
-    cav.addEventListener("click",this.windowopen)
   }
 
 }
