@@ -6,6 +6,7 @@ import{
     addRelateByIdAPI,
     deleteRelateByIdAPI,
     getListAllAPI,
+    updateRelAPI,
 }from '@/api/NeoEntity.js'
 const NeoEntity={
     state:{
@@ -80,8 +81,8 @@ const NeoEntity={
                 alert("删除节点失败")
             }
         },
-        deleteRelateById:async ({state,dispatch},data)=>{
-            const res=await deleteRelateByIdAPI(data.from,data.to);
+        deleteRelateById:async ({state,dispatch},id)=>{
+            const res=await deleteRelateByIdAPI(id);
             if(res){
                 dispatch('getListAll')
                 alert("成功删除关系")
@@ -107,6 +108,15 @@ const NeoEntity={
                 alert("获取实体信息失败")
             }
         },
+        updateRelById:async ({state,dispatch},data)=>{
+            const res=await updateRelAPI(data.id,data.name);
+            if(res){
+                dispatch('getListAll')
+                alert("成功更新关系")
+            }else{
+                alert("删除关系失败")
+            }
+        }
     }
 }
 export default NeoEntity

@@ -110,11 +110,13 @@ export default {
             layout: 'force', //图的布局，类型为力导图
             //layout:'circular',//环形布局
             //layout: 'none',
-            symbolSize: 40, // 调整节点的大小
+            symbolSize: 50, // 调整节点的大小
             roam: true, // 是否开启鼠标缩放和平移漫游。默认不开启。如果只想要开启缩放或者平移,可以设置成 'scale' 或者 'move'。设置成 true 为都开启
             edgeSymbol: ['circle', 'arrow'],
             edgeSymbolSize: [2, 10],
             smooth: false,   //关键点，为true是不支持虚线的，实线就用true
+            zoom:0.5,
+           // nodeScaleRatio:0.5,
             edgeLabel: {
               normal: {
                 textStyle: {
@@ -127,8 +129,10 @@ export default {
               }
             },
             force: {
-              repulsion: 2500,
-              edgeLength: [10, 50]
+              repulsion: 20,
+              edgeLength: [4, 5],
+              initLayout:'circular',
+              gravity:0.3
             },
             draggable: true,
             lineStyle: {
@@ -189,6 +193,7 @@ export default {
             //单击关系的事件
             _this.windowopen();
             _this.$refs.nav.$refs.editside.originName=params.data.name;
+            _this.$refs.nav.$refs.editside.id=params.data.id;
             _this.$refs.nav.$refs.editside.isEntity=false
             console.log(params.data.name);
             console.log(params.data.id);

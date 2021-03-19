@@ -23,7 +23,7 @@
               isEntity:false,
               from:null,
               to:null,
-              id:null,
+              id:null,//节点或关系的id
               category:1,
               symbolSize:30,
               x:64,
@@ -38,6 +38,7 @@
             ...mapActions([
                 'deleteNeoEntityById',
                 'deleteRelateById',
+                'updateRelById',
                 'updateNeoEntityByEntity'
             ]),
             close(){
@@ -50,25 +51,30 @@
                         this.deleteNeoEntityById({id:this.id})
                         this.$parent.$parent.draw()
                     }else{
-                        const data={
-                            from:38,
-                            to:39
-                        }
-                        this.deleteRelateById(data)
+                        this.deleteRelateById(this.id)
                         this.$parent.$parent.draw()
                     }
-                }else if(document.getElementsByName("opt")[1].checked==true){
-                    const data={
-                      name:this.edited,
-                      nodeId:this.id,
-                      des:"",
-                      category:this.category,
-                      symbolSize:this.symbolSize,
-                      x:this.x,
-                      y:this.y
+                }else if(document.getElementsByName("opt")[1].checked==true) {
+                  if (this.isEntity) {
+                    const data = {
+                      name: this.edited,
+                      nodeId: this.id,
+                      des: "",
+                      category: this.category,
+                      symbolSize: this.symbolSize,
+                      x: this.x,
+                      y: this.y
                     }
                     this.updateNeoEntityByEntity(data);
                     this.$parent.$parent.draw();
+                  }else{
+                    const data={
+                      id:this.id,
+                      name:this.edited
+                    }
+                    this.updateRelById(data);
+                    this.$parent.$parent.draw();
+                  }
                 }
 
             },

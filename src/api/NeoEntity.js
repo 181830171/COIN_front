@@ -46,11 +46,11 @@ export function addRelateByIdAPI(from,to,isSolid,des,name){
 }
 
 //删除关系
-export function deleteRelateByIdAPI(from,to){
+export function deleteRelateByIdAPI(id){
     return axios({
         url:'/delRelate',
         method:'GET',
-        params:{from:from,to:to}
+        params:{id:id}
     })
 }
 
@@ -59,6 +59,15 @@ export function getListAllAPI(){
     return axios({
         url:`/getListAll`,
         method:'GET',
+    })
+}
+
+//更新关系名称
+export  function updateRelAPI(id,name){
+    return axios({
+        url:`updateRel`,
+        method:'GET',
+        params:{id:id,name:name}
     })
 }
 
