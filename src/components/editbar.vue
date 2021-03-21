@@ -9,6 +9,9 @@
         <br>
       <p class="w3-bar-item w3-button hover-none" v-show="option==1">请输入新名称：</p>
         <input class="w3-bar-item" type="text" v-model="edited" :disabled="option==0">
+      <p class="w3-bar-item w3-button hover-none" v-show="option==1&&isEntity">请输入一段新的描述：</p>
+      <input class="w3-bar-item" type="text" v-model="edited2" :disabled="option==0||!isEntity">
+
         <button id="add-new-relations-button" style="text-align: center" @click="handleEdit()">确定</button>
     </div>
 </template>
@@ -24,11 +27,13 @@
               from:null,
               to:null,
               id:null,//节点或关系的id
-              category:1,
+              category:0,
+              //categories:3,
               symbolSize:30,
               x:64,
               y:45,
-              edited:'',
+              edited:'',//节点或关系的新名称
+              edited2:'',//节点或关系的新描述
               originName:"",
               disabledInput:false,
               option:""
@@ -41,6 +46,9 @@
                 'updateRelById',
                 'updateNeoEntityByEntity'
             ]),
+          ...mapGetters([
+             'allEntitiesAndRelations'
+          ]),
             close(){
                 this.$parent.isEditSeen=false
             },
@@ -59,7 +67,7 @@
                     const data = {
                       name: this.edited,
                       nodeId: this.id,
-                      des: "",
+                      des: this.edited2,
                       category: this.category,
                       symbolSize: this.symbolSize,
                       x: this.x,

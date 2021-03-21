@@ -5,7 +5,7 @@
 
   <div style="margin-left:20%">
 
-    <div class="w3-container" id="main" style="width:1000px;height:800px" ref="main" @click="windowopen()">
+    <div class="w3-container" id="main" style="width:1000px;height:700px" ref="main" @click="windowopen()">
     </div>
     </div>
 </template>
@@ -129,8 +129,8 @@ export default {
               }
             },
             force: {
-              repulsion: 20,
-              edgeLength: [4, 5],
+              repulsion: 40,
+              edgeLength: [10, 20],
               initLayout:'circular',
               gravity:0.3
             },
@@ -178,6 +178,7 @@ export default {
             //单击节点的事件
             _this.windowopen();
             //将参数传给editbar组件
+            //_this.$refs.nav.$refs.editside.categories=category1;
             _this.$refs.nav.$refs.editside.originName=params.data.name;
             _this.$refs.nav.$refs.editside.isEntity=true;
             _this.$refs.nav.$refs.editside.id=params.data.nodeId;

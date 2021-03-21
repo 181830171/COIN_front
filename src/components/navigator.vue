@@ -34,12 +34,12 @@
             'allEntitiesAndRelations'
         ]),
         add(){
-           this.isAddSeen=true
-            this.isEditSeen=false
+           this.isAddSeen=true;
+            this.isEditSeen=false;
         },
         edit(){
-            this.isEditSeen=true
-            this.isAddSeen=false
+            this.isEditSeen=true;
+            this.isAddSeen=false;
         },
         export2JSON(){
           var test=toRaw(this.$store.state.NeoEntity)

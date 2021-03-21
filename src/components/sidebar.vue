@@ -14,7 +14,7 @@
         <input class="w3-bar-item" id="description" type="text" v-model="des">
         <p class="w3-bar-item w3-button hover-none">请选择实体类别</p>
         <select class="w3-bar-item" id="cate" v-model="cate">
-            <option v-for="n in parseInt(allEntitiesAndRelations.categories)" :value="n-1">{{n}}</option>
+            <option v-for="n in parseInt(allEntitiesAndRelations.categories)" :value="n-1">类目{{n}}</option>
         </select>
         <button id="add-new-entity-button" style="text-align: center" @click="addEntityHandler()">添加</button>
     </div>
