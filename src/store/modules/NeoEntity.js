@@ -7,7 +7,7 @@ import{
     deleteRelateByIdAPI,
     getListAllAPI,
     updateRelAPI,
-}from '@/api/NeoEntity.js'
+}from '../../api/NeoEntity.js'
 const NeoEntity={
     state:{
         allEntitiesAndRelations:{},
@@ -43,7 +43,7 @@ const NeoEntity={
 
     },
     actions:{
-        getListAll: async ({state,commit})=>{
+        getListAll: async ({commit})=>{
             const res= await getListAllAPI()
             if(res){
                 console.log("res:",res);

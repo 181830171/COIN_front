@@ -1,4 +1,4 @@
-import { axios } from '@/utils/request'
+import { axios } from '../utils/request'
 
 //添加实体
 export function addNeoEntityAPI(data){
