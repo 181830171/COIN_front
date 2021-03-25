@@ -52,18 +52,12 @@ export default {
       myChart.showLoading();
       var nodes;
       var links1;
-      var category1;
       var categories = [];
       const _this=this;
       setTimeout(function (){
         nodes=test.allEntitiesAndRelations.nodes;
         links1=test.allEntitiesAndRelations.links;
-        category1=test.allEntitiesAndRelations.categories;
-        for (var i = 0; i < category1; i++) {
-          categories[i] = {
-            name: '类目' + (i+1)
-          };
-        }
+        categories=test.allEntitiesAndRelations.categories;
         myChart.hideLoading();
         var option = {
           // 图的标题
