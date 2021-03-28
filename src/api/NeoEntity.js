@@ -32,7 +32,7 @@ export function getNeoEntityByIdAPI(id){
     return axios({
         url:`/get`,
         method:'GET',
-        id
+        params:{id:id}
     })
 }
 

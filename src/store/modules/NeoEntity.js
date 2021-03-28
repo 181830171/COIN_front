@@ -35,7 +35,7 @@ const NeoEntity={
         },
         set_listAll:function(state,data){
             state.allEntitiesAndRelations=data;
-            console.log("data:",data);
+            //console.log("data:",data);
         },
         set_currentNeoEntity:function (state,data){
             state.currentNeoEntity=data;
@@ -46,7 +46,7 @@ const NeoEntity={
         getListAll: async ({commit})=>{
             const res= await getListAllAPI()
             if(res){
-                console.log("res:",res);
+                //console.log("res:",res);
                 commit('set_listAll',res)
             }else{
                 alert("大失败！")
@@ -66,10 +66,11 @@ const NeoEntity={
             const res=await addRelateByIdAPI(data.from,data.to,data.isSolid,data.des,data.name)
             if(res){
                 dispatch('getListAll')
+                console.log("成功")
                 //commit('set_addRelateById',data)
-                alert("成功添加关系")
+                //alert("成功添加关系")
             }else {
-                alert("添加关系失败")
+                //alert("添加关系失败")
             }
         },
         deleteNeoEntityById:async ({state,dispatch},data)=>{
@@ -86,7 +87,9 @@ const NeoEntity={
             if(res){
                 dispatch('getListAll')
                 alert("成功删除关系")
+                console.log("成功删除关系")
             }else{
+                console.log("删除关系失败")
                 alert("删除关系失败")
             }
         },

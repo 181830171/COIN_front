@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve --mode production",
     "build": "vue-cli-service build",
-    "test" : "jest"
+    "test": "jest"
   },
   "dependencies": {
     "@jest/globals": "^26.6.2",
