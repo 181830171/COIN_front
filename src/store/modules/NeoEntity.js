@@ -10,7 +10,11 @@ import{
 }from '../../api/NeoEntity.js'
 const NeoEntity={
     state:{
-        allEntitiesAndRelations:{},
+        allEntitiesAndRelations:{
+			categories: [],
+			nodes: [],
+			links:[],
+		},
         addNeoEntityParams:{
             name:"",
             des:"",

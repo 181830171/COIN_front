@@ -168,6 +168,7 @@ export default {
 
 
         myChart.on('click', function (params) {
+			console.log('params:',params)
           if (params.dataType == 'node') {
             //单击节点的事件
             _this.windowopen();
