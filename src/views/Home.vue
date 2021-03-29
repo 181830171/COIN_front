@@ -1,5 +1,5 @@
 <template>
-
+	<div>
   <navigator ref="nav"/>
 <!--  <sidebar/>-->
 
@@ -8,6 +8,7 @@
     <div class="w3-container" id="main" style="width:1000px;height:700px" ref="main" @click="windowopen()">
     </div>
     </div>
+	</div>
 </template>
 
 <script>
@@ -116,6 +117,7 @@ export default {
                 textStyle: {
                   fontSize: 14
                 },
+				
                 show: true,
                 formatter: function (x) {
                   return x.data.name;
