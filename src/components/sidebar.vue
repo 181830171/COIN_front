@@ -1,5 +1,11 @@
 <template>
     <div id="index" class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width: 18%">
+        <br>
+        <p class="w3-bar-item w3-button hover-none">现在打开的图谱为：</p>
+        <p class="w3-bar-item w3-button hover-none">《红楼梦人物》关系图</p>
+        <p class="w3-bar-item w3-button hover-none">图谱节点分类数：{{allEntitiesAndRelations.categories.length}}</p>
+        <p class="w3-bar-item w3-button hover-none">总节点数：{{allEntitiesAndRelations.nodes.length}}</p>
+        <p class="w3-bar-item w3-button hover-none">总连接数：{{allEntitiesAndRelations.links.length}}</p>
     </div>
     <div id="addSomething" class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width: 18%;font-size: 22px" v-show="seen">
         <p class="w3-bar-item w3-button w3-xlarge" @Click="close()">←</p>
