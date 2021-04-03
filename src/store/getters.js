@@ -3,6 +3,8 @@ const getters={
     allEntitiesAndRelations:state=>state.NeoEntity.allEntitiesAndRelations,
     addNeoEntityParams:state=>state.NeoEntity.addNeoEntityParams,
     addRelateByIdParams:state=>state.NeoEntity.addRelateByIdParams,
-    currentNeoEntity:state=>state.NeoEntity.currentNeoEntity
+    currentNeoEntity:state=>state.NeoEntity.currentNeoEntity,
+	currentCategory:state=>state.NeoEntity.currentCategory,
+	currentRelation:state=>state.NeoEntity.currentRelation,
 }
 export default getters

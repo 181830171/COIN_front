@@ -54,6 +54,24 @@ export function deleteRelateByIdAPI(id){
     })
 }
 
+// 添加种类
+export function addCategory(data){
+	return axios({
+	    url:`/addCategory`,
+	    method:'POST',
+	    data
+	})
+}
+
+// 更新种类
+export function updateCategory(data){
+	return axios({
+	    url:`/updateCategory`,
+	    method:'POST',
+	    data
+	})
+}
+
 //获取所有实体关系信息
 export function getListAllAPI(){
     return axios({

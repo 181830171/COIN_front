@@ -21,6 +21,8 @@ const NeoEntity={
             category:0
         },
         currentNeoEntity:{},
+		currentRelation:{},
+		currentCategory:{},
         addRelateByIdParams:{
             from:0,
             to:0,
@@ -43,7 +45,13 @@ const NeoEntity={
         },
         set_currentNeoEntity:function (state,data){
             state.currentNeoEntity=data;
-        }
+        },
+		set_currentRelation:function(state, data){
+			state.currentRelation = data;
+		},
+		set_currentCategory:function(state, data){
+			state.currentCategory = data;
+		}
 
     },
     actions:{

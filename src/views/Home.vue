@@ -2,8 +2,10 @@
 	<div>
   <navigator ref="nav"/>
 <!--  <sidebar/>-->
-
-  <div style="margin-left:20%">
+	<div id="upper_edit_bar">
+	<upper-edit-bar></upper-edit-bar>
+	</div>
+  <div >
 
     <div class="w3-container" id="main" style="width:1000px;height:700px" ref="main" @click="windowopen()">
     </div>
@@ -14,20 +16,21 @@
 <script>
 // @ is an alias to /src
 
-import {mapActions, mapGetters, mapState} from "vuex";
+import {mapActions, mapGetters, mapMutations,mapState} from "vuex";
 import windowmodual from "../components/windowModual";
 let echarts=require('echarts')
 import sidebar from "../components/sidebar";
 import navigator from "../components/navigator";
 import {toRaw} from "@vue/reactivity";
-
+import upperEditBar from "../components/upperEditBar";
 
 export default {
   name: 'Home',
   components: {
     Navigator,
     //HelloWorld
-    sidebar,navigator
+    sidebar,navigator,
+	upperEditBar
   },
   data(){
     return {openwindow:true}
@@ -36,10 +39,18 @@ export default {
 
   computed: {
     ...mapGetters([
-        'allEntitiesAndRelations'
+        'allEntitiesAndRelations',
+		'currentNeoEntity',
+		'currentRelation',
+		'currentCategory'
     ])
   },
   methods:{
+	...mapMutations([
+		'set_currentNeoEntity',
+		'set_currentRelation',
+		'set_currentCategory',
+	]),
     ...mapActions([
       'getListAll',
       'getNeoEntityById',
@@ -107,7 +118,7 @@ export default {
             //layout: 'none',
             symbolSize: 50, // 调整节点的大小
             roam: true, // 是否开启鼠标缩放和平移漫游。默认不开启。如果只想要开启缩放或者平移,可以设置成 'scale' 或者 'move'。设置成 true 为都开启
-            edgeSymbol: ['circle', 'arrow'],
+            edgeSymbol: ['arrow', 'arrow'],
             edgeSymbolSize: [2, 10],
             smooth: false,   //关键点，为true是不支持虚线的，实线就用true
             zoom:0.5,
@@ -183,20 +194,46 @@ export default {
             _this.$refs.nav.$refs.editside.symbolSize=params.data.symbolSize;
             _this.$refs.nav.$refs.editside.x=params.data.x;
             _this.$refs.nav.$refs.editside.y=params.data.y;
-
-            console.log(params.name);
-            console.log(params.data.nodeId);
-            console.log(params)
+			_this.set_currentNeoEntity({
+				nodeId:params.data.nodeId,
+				name:params.data.name,
+				des:params.data.des,
+				x:params.data.x,
+				y:params.data.y,
+				symbolSize:params.data.symbolSize,
+				symbol:params.data.symbol,
+				category:params.data.category
+			})
+			var category = _this.allEntitiesAndRelations.categories[params.data.category];
+			console.log('category',category);
+			_this.set_currentCategory({
+				categoryId:category.categoryId,
+				name:category.name,
+				symbol:category.symbol,
+				itemStyle:category.itemStyle,
+			});
+			console.log('you click a node', params);
           }else if(params.dataType=='edge'){
             //单击关系的事件
             _this.windowopen();
             _this.$refs.nav.$refs.editside.originName=params.data.name;
             _this.$refs.nav.$refs.editside.id=params.data.id;
-            _this.$refs.nav.$refs.editside.isEntity=false
+            _this.$refs.nav.$refs.editside.isEntity=false;
+			_this.set_currentRelation({
+				id:params.data.id,
+				source:params.data.source,
+				target:params.data.target,
+				name:params.data.name,
+				des:params.data.des,
+				lineStyle:params.data.lineStyle,
+			});
             console.log(params.data.name);
             console.log(params.data.id);
-            console.log(params)
-          }
+            console.log(params);
+			console.log('you click an edge', params);
+          }else{
+			  console.log('you clicked something else');
+		  }
         });
 
 
@@ -269,4 +306,7 @@ export default {
 </script>
 <style scoped>
   @import "../assets/main.css";
+  #upper_edit_bar{
+	  
+  }
 </style>
