@@ -24,7 +24,17 @@ const NeoEntity={
             category:0
         },
         currentNeoEntity:{},
-		currentRelation:{},
+		currentRelation:{
+			id:-1,
+			source:'',
+			target:'',
+			name:'',
+			des:'',
+			lineStyle:{
+				type:'',
+			},
+			symbol:['','']
+		},
 		currentCategory:{
 			categoryId:-1,
 			name:'',

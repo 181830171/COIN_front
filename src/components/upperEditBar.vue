@@ -30,7 +30,7 @@
 			<span>关系</span><br />
 
 			<span>起点:</span>
-			<a-select :default-value="currentRelation.symbol==undefined?'arrow':currentRelation.symbol[0]" style="display: inline-block;" :disabled="!isEditRel" @change="handleStartNodeEdgeChange">
+			<a-select :value="currentRelation.symbol[0]" style="display: inline-block;" :disabled="!isEditRel" @change="handleStartNodeEdgeChange">
 							<template v-for="(edge_style, index) in edge_styles" :key="index">
 								<a-select-option :value="edge_style[0]">
 									{{edge_style[0]}}
@@ -39,7 +39,7 @@
 			</a-select>
 			
 			<span>终点:</span>
-			<a-select :default-value="currentRelation.symbol==undefined?'arrow':currentRelation.symbol[1]" style="display: inline-block;" :disabled="!isEditRel" @change="handleEndNodeEdgeChange">
+			<a-select :value="currentRelation.symbol[1]" style="display: inline-block;" :disabled="!isEditRel" @change="handleEndNodeEdgeChange">
 							<template v-for="(edge_style, index) in edge_styles" :key="index">
 								<a-select-option :value="edge_style[0]">
 									{{edge_style[0]}}
@@ -112,6 +112,7 @@
 				console.log('data',data)
 				this.updateRelSymbol(data);
 				this.$parent.$parent.draw();
+				console.log('currentRelation',this.currentRelation);
 			},
 			handleEndNodeEdgeChange(e){
 				console.log('click end edge change', e);
@@ -122,6 +123,7 @@
 				console.log('data',data);
 				this.updateRelSymbol(data);
 				this.$parent.$parent.draw();
+				console.log('currentRelation',this.currentRelation);
 			},
 			handleColorChange(e){
 				console.log('click color change', e);
