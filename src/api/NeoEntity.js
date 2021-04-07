@@ -1,5 +1,5 @@
 import { axios } from '../utils/request'
-
+import qs from 'qs'
 //添加实体
 export function addNeoEntityAPI(data){
     return axios({
@@ -45,6 +45,30 @@ export function addRelateByIdAPI(from,to,isSolid,des,name){
     })
 }
 
+//根据id修改关系两端的形状
+export function updateRelSymbolAPI(id, symbol){
+	return axios({
+		url:'/updateRelSymbol',
+		method:'GET',
+		params:{id:id,symbol:symbol},
+		paramsSerializer: function(params) {
+		const res = qs.stringify(params, {arrayFormat:'repeat'} );
+		console.log('res',res);
+		return res;
+		}
+	})
+}
+
+//根据id修改关系的虚实线
+export function updateRelTypeAPI(id, type){
+	return axios({
+		url:'/updateRelType',
+		method:'GET',
+		params:{id:id,type:type},
+		
+	})
+}
+
 //删除关系
 export function deleteRelateByIdAPI(id){
     return axios({
@@ -55,7 +79,7 @@ export function deleteRelateByIdAPI(id){
 }
 
 // 添加种类
-export function addCategory(data){
+export function addCategoryAPI(data){
 	return axios({
 	    url:`/addCategory`,
 	    method:'POST',
@@ -64,11 +88,11 @@ export function addCategory(data){
 }
 
 // 更新种类
-export function updateCategory(data){
+export function updateCategoryAPI(data){
 	return axios({
 	    url:`/updateCategory`,
 	    method:'POST',
-	    data
+		data
 	})
 }
 

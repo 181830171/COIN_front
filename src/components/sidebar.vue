@@ -131,6 +131,7 @@
 <style scoped>
     @import '../assets/main.css';
     .w3-sidebar{
+		/* margin-top: 11%; */
         font-size: 16px;
         height: 800px;
         padding:3px 16px;

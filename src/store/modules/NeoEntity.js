@@ -7,6 +7,9 @@ import{
     deleteRelateByIdAPI,
     getListAllAPI,
     updateRelAPI,
+	addCategoryAPI,
+	updateCategoryAPI,
+	updateRelSymbolAPI
 }from '../../api/NeoEntity.js'
 const NeoEntity={
     state:{
@@ -22,7 +25,13 @@ const NeoEntity={
         },
         currentNeoEntity:{},
 		currentRelation:{},
-		currentCategory:{},
+		currentCategory:{
+			categoryId:-1,
+			name:'',
+			itemStyle:{
+				color:'#000000'
+			}
+		},
         addRelateByIdParams:{
             from:0,
             to:0,
@@ -131,7 +140,34 @@ const NeoEntity={
             }else{
                 alert("删除关系失败")
             }
-        }
+        },
+		addCategory:async({state,dispatch},data)=>{
+			const res = await addCategoryAPI(data);
+			if(res){
+				dispatch('getListAll')
+				alert("成功添加种类")
+			}else{
+				alert("添加种类失败")
+			}
+		},
+		updateCategory:async({state,dispatch},data)=>{
+			const res = await updateCategoryAPI(data);
+			if(res){
+				dispatch('getListAll')
+				alert("成功更新种类")
+			}else{
+				alert("更新种类失败")
+			}
+		},
+		updateRelSymbol:async({state,dispatch},data)=>{
+			const res = await updateRelSymbolAPI(data.id, data.symbol);
+			if(res){
+				dispatch('getListAll')
+				alert('成功更新关系')
+			}else{
+				alert('更新关系失败')
+			}
+		}
     }
 }
 export default NeoEntity

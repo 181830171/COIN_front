@@ -39,6 +39,12 @@
               option:""
             }
         },
+		computed:{
+			...mapGetters([
+			'currentNeoEntity',
+			'allEntitiesAndRelations'
+			])
+		},
         methods:{
             ...mapActions([
                 'deleteNeoEntityById',
@@ -46,9 +52,6 @@
                 'updateRelById',
                 'updateNeoEntityByEntity'
             ]),
-          ...mapGetters([
-             'allEntitiesAndRelations'
-          ]),
             close(){
                 this.$parent.isEditSeen=false
             },
@@ -71,7 +74,8 @@
                       category: this.category,
                       symbolSize: this.symbolSize,
                       x: this.x,
-                      y: this.y
+                      y: this.y,
+					  symbol:this.currentNeoEntity.symbol,
                     }
                     this.updateNeoEntityByEntity(data);
                     this.$parent.$parent.draw();

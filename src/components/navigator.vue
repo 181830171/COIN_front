@@ -1,4 +1,5 @@
 <template>
+	<div>
     <ul class="all">
         <li class='title' style="float: left">COIN</li>
         <li class="btn"><a href="#" @click="export2JSON()">Export</a></li>
@@ -11,8 +12,12 @@
         </li>
         <li class="btn"><a href="#">Search</a></li>
     </ul>
+	<div id="upper_edit_bar" class="w3-container w3-sand">
+		<upper-edit-bar ref="upper_edit_side"></upper-edit-bar>
+	</div>
     <sidebar id="side" :seen="isAddSeen" ref="sidebar"/>
     <editbar ref="editside" :seen="isEditSeen" />
+	</div>
 </template>
 
 <script>
@@ -20,6 +25,7 @@
     import Editbar from "./editbar";
     import {mapActions,mapGetters} from 'vuex';
     import {toRaw} from "@vue/reactivity";
+	import upperEditBar from "./upperEditBar.vue";
     export default {
         name: "navigator",
         data(){
@@ -27,7 +33,8 @@
         },
         components:{
             Editbar,
-            sidebar
+            sidebar,
+			upperEditBar,
         },
         methods:{
           ...mapGetters([
@@ -68,6 +75,7 @@
         padding: 0;
         overflow: hidden;
         background-color: #333;
+		height: 7%;
     }
 
     li.btn {

@@ -2,12 +2,10 @@
 	<div>
   <navigator ref="nav"/>
 <!--  <sidebar/>-->
-	<div id="upper_edit_bar">
-	<upper-edit-bar></upper-edit-bar>
-	</div>
+
   <div >
 
-    <div class="w3-container" id="main" style="width:1000px;height:700px" ref="main" @click="windowopen()">
+    <div class="w3-container " id="main" style="margin-left:18%;width: 1000px;height:700px" ref="main" @click="windowopen()">
     </div>
     </div>
 	</div>
@@ -193,6 +191,7 @@ export default {
             _this.$refs.nav.$refs.editside.symbolSize=params.data.symbolSize;
             _this.$refs.nav.$refs.editside.x=params.data.x;
             _this.$refs.nav.$refs.editside.y=params.data.y;
+			_this.$refs.nav.$refs.editside.symbol = params.data.symbol;
 			_this.set_currentNeoEntity({
 				nodeId:params.data.nodeId,
 				name:params.data.name,
@@ -208,9 +207,12 @@ export default {
 			_this.set_currentCategory({
 				categoryId:category.categoryId,
 				name:category.name,
-				symbol:category.symbol,
 				itemStyle:category.itemStyle,
 			});
+			
+			// 更新upper_edit_side
+			_this.$refs.nav.$refs.upper_edit_side.isEditNode = true;
+			_this.$refs.nav.$refs.upper_edit_side.isEditRel = false;
 			console.log('you click a node', params);
           }else if(params.dataType=='edge'){
             //单击关系的事件
@@ -225,12 +227,20 @@ export default {
 				name:params.data.name,
 				des:params.data.des,
 				lineStyle:params.data.lineStyle,
+				symbol:params.data.symbol
 			});
             console.log(params.data.name);
             console.log(params.data.id);
             console.log(params);
+			
+			_this.$refs.nav.$refs.upper_edit_side.isEditNode = false;
+			_this.$refs.nav.$refs.upper_edit_side.isEditRel = true;
 			console.log('you click an edge', params);
+			console.log('category', _this.currentCategory)
+			
           }else{
+			  _this.$refs.nav.$refs.upper_edit_side.isEditNode = false;
+			  _this.$refs.nav.$refs.upper_edit_side.isEditRel = false;
 			  console.log('you clicked something else');
 		  }
         });
@@ -332,7 +342,4 @@ export default {
 </script>
 <style scoped>
   @import "../assets/main.css";
-  #upper_edit_bar{
-	  
-  }
 </style>
