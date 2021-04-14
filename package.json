@@ -22,7 +22,7 @@
     "jquery": "^3.6.0",
     "qs": "^6.10.1",
     "vcolorpicker": "^1.1.0",
-    "vue": "^3.0.0",
+    "vue": "^3.0.11",
     "vue-color-picker-board": "^1.1.1",
     "vue-loader": "^15.9.6",
     "vue-ref": "^2.0.0",
