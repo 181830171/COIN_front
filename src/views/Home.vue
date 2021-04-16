@@ -57,7 +57,8 @@ export default {
       'getListAll',
       'getNeoEntityById',
       'addNeoEntity',
-      'updateNeoEntityByEntity'
+      'updateNeoEntityByEntity',
+      'getSearchHistories'
     ]),
       draw1(nodes,links,cate){
 	      this.isSeen=false
@@ -362,7 +363,7 @@ export default {
                 //只覆盖内圆部分，这样在外圆部分可以触发鼠标点击，悬浮事件
                 r: item.symbolSize / 3
               },
-              //invisible: true,//透明
+              invisible: true,//透明
               draggable: true,
               ondrag: function (dx, dy) {
                 onPointDragging(dataIndex, [this.x, this.y]);
@@ -449,6 +450,8 @@ export default {
   mounted() {
     this.getListAll()
     this.draw()
+    this.getSearchHistories()
+
   }
 
 }

@@ -12,7 +12,10 @@
 <!--            </ul>-->
         </li>
         <li class="btn"><a href="#" @click="handleSearch()">Search</a></li>
-        <input name="search" id="search-input" type="text" placeholder="搜索" v-model="searchText">
+        <input name="search" list="browsers" type="text" placeholder="搜索" v-model="searchText">
+            <datalist id="browsers">
+                <option v-for="reco in searchHistoryList" :value="reco"></option>
+            </datalist>
     </ul>
 	<div id="upper_edit_bar" class="w3-container w3-sand">
 		<upper-edit-bar ref="upper_edit_side"></upper-edit-bar>
@@ -33,7 +36,7 @@
     export default {
         name: "navigator",
         data(){
-            return {isAddSeen:false,isEditSeen:false,searchText:""}
+            return {isAddSeen:false,isEditSeen:false,searchText:"",searchHistoryList:[]}
         },
         components:{
             Editbar,
@@ -44,6 +47,7 @@
             ...mapGetters([
                 'allEntitiesAndRelations',
                 'searchResult',
+                'searchHistories'
             ]),
             ...mapActions([
                 'searchNodes',
@@ -83,11 +87,19 @@
                 } else {
                     this.searchNodes(this.searchText);
                     this.searchText = ""
+                    console.log("histories",toRaw(this.$store.state.NeoEntity).searchHistories)
+                    this.searchHistoryList=toRaw(this.$store.state.NeoEntity).searchHistories
                     setTimeout(function () {
+                        console.log(_this.searchHistoryList)
                         _this.$parent.draw1(toRaw(_this.$store.state.NeoEntity).searchResult,toRaw(_this.$store.state.NeoEntity).allEntitiesAndRelations.links,toRaw(_this.$store.state.NeoEntity).allEntitiesAndRelations.categories)
                     }, 2000)
+
                 }
             }
+        },
+        mounted(){
+            this.getSearchHistories()
+            this.searchHistoryList=toRaw(this.$store.state.NeoEntity).searchHistories
         }
     }
 </script>

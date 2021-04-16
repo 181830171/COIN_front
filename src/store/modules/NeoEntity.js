@@ -51,7 +51,8 @@ const NeoEntity={
             des:"",
             name:""
         },
-        searchResult:[]
+        searchResult:[],
+        searchHistories:[]
     },
     mutations:{
         set_addNeoEntityParams:function(state,data){
@@ -77,8 +78,11 @@ const NeoEntity={
 		},
 		set_currentCategory:function(state, data){
 			state.currentCategory = data;
-		}
-
+		},
+        //设置历史记录
+        set_searchHistories:function(state,data){
+            state.searchHistories=data
+        }
     },
     actions:{
         getListAll: async ({commit})=>{
@@ -229,10 +233,10 @@ const NeoEntity={
             }
         },
         //获得搜索历史记录
-        getSearchHistories:async({state})=>{
+        getSearchHistories:async({state,commit})=>{
             const res=await getSearchHistoriesAPI();
             if(res){
-                console.log("history",res)
+                commit("set_searchHistories",res)
             }else{
                 console.log("error")
             }
