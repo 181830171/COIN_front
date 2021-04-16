@@ -128,7 +128,7 @@ export default {
                 textStyle: {
                   fontSize: 14
                 },
-				
+
                 show: true,
                 formatter: function (x) {
                   return x.data.name;
@@ -209,7 +209,7 @@ export default {
 				name:category.name,
 				itemStyle:category.itemStyle,
 			});
-			
+
 			// 更新upper_edit_side
 			_this.$refs.nav.$refs.upper_edit_side.isEditNode = true;
 			_this.$refs.nav.$refs.upper_edit_side.isEditRel = false;
@@ -232,12 +232,12 @@ export default {
             console.log(params.data.name);
             console.log(params.data.id);
             console.log(params);
-			
+
 			_this.$refs.nav.$refs.upper_edit_side.isEditNode = false;
 			_this.$refs.nav.$refs.upper_edit_side.isEditRel = true;
 			console.log('you click an edge', params);
 			console.log('category', _this.currentCategory)
-			
+
           }else{
 			  _this.$refs.nav.$refs.upper_edit_side.isEditNode = false;
 			  _this.$refs.nav.$refs.upper_edit_side.isEditRel = false;
