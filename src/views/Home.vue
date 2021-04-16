@@ -139,7 +139,8 @@ export default {
               repulsion: 40,
               edgeLength: [10, 20],
               initLayout:'circular',
-              gravity:0.3
+              gravity:0.3,
+			  layoutAnimation:true,
             },
             draggable: true,
             lineStyle: {
