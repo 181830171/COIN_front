@@ -134,6 +134,38 @@ const NeoEntity={
                 alert("更新实体失败")
             }
         },
+		updateNeoEntityByCategory:async({state,dispatch,commit},new_name)=>{
+			// const data_current_category = {
+			// 	categoryId:state.currentCategory.categoryId,
+			// 	name:new_name,
+			// 	itemStyle:state.currentCategory.itemStyle,
+			// }
+			var i = 0;
+			for(i=0;i<state.allEntitiesAndRelations.categories.length;i++){
+				if(state.allEntitiesAndRelations.categories[i].name==new_name){
+					break;
+				}
+			}
+			const data = {
+				nodeId:state.currentNeoEntity.nodeId,
+				name:state.currentNeoEntity.name,
+				des:state.currentNeoEntity.des,
+				symbolSize:state.currentNeoEntity.symbolSize,
+				category:i,
+				x:state.currentNeoEntity.x,
+				y:state.currentNeoEntity.y,
+				symbol:state.currentNeoEntity.symbol
+			}
+			const res = await updateNeoEntityByEntityAPI(data)
+			if(res){
+				dispatch('getListAll');
+				commit('set_currentNeoEntity',res)
+				commit('set_currentCategory',state.allEntitiesAndRelations.categories[i])
+				alert('成功更改种类')
+			}else{
+				alert('更改种类失败')
+			}
+		},
         getNeoEntityById:async ({state,commit},data)=>{
             const res=await getNeoEntityByIdAPI(data);
             if(res){

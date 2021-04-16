@@ -82,7 +82,7 @@
 										:defaultColor="'#00AAFF'"
 										@onSelection="handleColorChange">
 				</vue-color-picker-board> -->
-				 <a-input type="color" :value="currentCategory.itemStyle.color" v-on:change="handleColorChange" style="height: 4xp;width: 50px;" :disabled="!isEditNode"></a-input>
+				 <a-input type="color" :value="currentCategory.itemStyle.color" @blur="handleColorChange" style="height: 4xp;width: 50px;" :disabled="!isEditNode"></a-input>
 				</div>
 			</div>
 			<div id="relation" style="width: 50%; float: left;">
@@ -172,7 +172,8 @@
 				'addCategory',
 				'updateCategory',
 				'updateNeoEntityByEntity',
-				'updateRelSymbol'
+				'updateRelSymbol',
+				'updateNeoEntityByCategory',
 			]),
 			handleShapeChange(e){
 				console.log('click shape change', e);
@@ -228,6 +229,8 @@
 			},
 			handleCategoryChange(e){
 				console.log('category change',e)
+				this.updateNeoEntityByCategory(e)
+				this.$parent.$parent.draw();
 			},
 			// 修改种类名称
 			editCategoryNameHandler(e,category){
@@ -274,18 +277,26 @@
 			// 添加种类
 			addCategoryHandler(e){
 				this.addCategoryVisible = true;
+				e.stopPropagation();
+				e.preventDefault();
 			},
 			addCategoryFormCancleHandler(e){
 				this.addCategoryVisible = false;
 			},
 			addCategoryFormConfirmHandler(e){
 				this.addCategoryVisible = false;
+				this.addCategory({
+					name:this.addCategoryForm.name,
+					color:this.addCategoryForm.color,
+				})
 			},			
 			addCategoryFormNameBlurHandler(e){
 				console.log('name blur', e);
+				this.addCategoryForm.name = e.srcElement.value;
 			},
 			addCategoryFormColorBlurHandler(e){
 				console.log('color blur', e)
+				this.addCategoryForm.color = e.target.value;
 			}
 		},
 		created() {
