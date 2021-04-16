@@ -276,6 +276,18 @@ export default {
 
         };
         myChart.setOption(option);
+        myChart.on('restore',function () {
+            setNode()
+        });
+        myChart.on('resize',function () {
+          initNode();
+          updatePosition();
+        });
+		// myChart.on('roam',function(params){
+		// 	console.log('data zoom');
+		// 	updatePosition();
+		// })
+
         initNode();
         // myChart.on('restore',function () {
         //     setNode()
@@ -351,6 +363,12 @@ export default {
         });
 
       },3000);
+
+		// 添加放大缩小事件
+		myChart.getZr().on('mousewheel', function () {
+			updatePosition()
+		} )
+		
       //一开始就是拖动模式的话需要调用initNode()
       function initNode(){
         //该方法用于初始化覆盖在节点上的透明的圆，以便于拖动操作
