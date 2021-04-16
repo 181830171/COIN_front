@@ -80,13 +80,14 @@ const NeoEntity={
                 //console.log("res:",res);
                 commit('set_listAll',res)
             }else{
-                alert("大失败！")
+                swal('系统提示','大失败','error')
             }
         },
         addNeoEntity: async ({state,commit,dispatch},data)=>{
             const res=await addNeoEntityAPI(data)
             if(res){
-                alert("成功")
+                // alert("成功")
+				swal('系统提示','添加节点成功','success')
                 dispatch('getListAll')
                 //console.log(state.allEntitiesAndRelations)
             }else{
@@ -97,31 +98,35 @@ const NeoEntity={
             const res=await addRelateByIdAPI(data.from,data.to,data.isSolid,data.des,data.name)
             if(res){
                 dispatch('getListAll')
-                console.log("成功")
+                // console.log("成功")
+				swal('系统提示','添加关系成功','success')
                 //commit('set_addRelateById',data)
                 //alert("成功添加关系")
             }else {
                 //alert("添加关系失败")
+				swal('系统提示','添加关系失败','error')
             }
         },
         deleteNeoEntityById:async ({state,dispatch},data)=>{
             const res=await deleteNeoEntityByIdAPI(data.id);
             if(res){
                 dispatch('getListAll')
-                alert("成功删除节点")
+                swal('系统提示',"成功删除节点",'success')
             }else{
-                alert("删除节点失败")
+                swal('系统提示','删除节点失败','error')
             }
         },
         deleteRelateById:async ({state,dispatch},id)=>{
             const res=await deleteRelateByIdAPI(id);
             if(res){
                 dispatch('getListAll')
-                alert("成功删除关系")
+                // alert("成功删除关系")
+				swal('系统提示','删除关系成功','success')
                 console.log("成功删除关系")
             }else{
                 console.log("删除关系失败")
-                alert("删除关系失败")
+                // alert("删除关系失败")
+				swal('系统提示','删除关系失败','error')
             }
         },
         updateNeoEntityByEntity:async ({state,dispatch,commit},data)=>{
@@ -129,9 +134,11 @@ const NeoEntity={
             if(res){
                 dispatch('getListAll')
                 commit('set_currentNeoEntity',res)
-                alert("成功更新实体")
+                // alert("成功更新实体")
+				swal('系统提示','更新实体成功','success')
             }else{
-                alert("更新实体失败")
+                // alert("更新实体失败")
+				swal('系统提示','更新实体失败','error')
             }
         },
 		updateNeoEntityByCategory:async({state,dispatch,commit},new_name)=>{
@@ -161,9 +168,10 @@ const NeoEntity={
 				dispatch('getListAll');
 				commit('set_currentNeoEntity',res)
 				commit('set_currentCategory',state.allEntitiesAndRelations.categories[i])
-				alert('成功更改种类')
+				// alert('成功更改种类')
+				swal('系统提示','更改种类成功','success')
 			}else{
-				alert('更改种类失败')
+				swal('系统提示','更改种类失败','error')
 			}
 		},
         getNeoEntityById:async ({state,commit},data)=>{
@@ -171,43 +179,51 @@ const NeoEntity={
             if(res){
                 commit('set_currentNeoEntity',res)
             }else{
-                alert("获取实体信息失败")
+                // alert("获取实体信息失败")
+				swal('系统提示','获取实体信息失败','error')
             }
         },
         updateRelById:async ({state,dispatch},data)=>{
             const res=await updateRelAPI(data.id,data.name);
             if(res){
                 dispatch('getListAll')
-                alert("成功更新关系")
+                // alert("成功更新关系")
+				swal('系统提示','更新关系成功','success')
             }else{
-                alert("删除关系失败")
+                swal('系统提示','更新关系失败','error')
             }
         },
 		addCategory:async({state,dispatch},data)=>{
 			const res = await addCategoryAPI(data);
 			if(res){
 				dispatch('getListAll')
-				alert("成功添加种类")
+				// alert("成功添加种类")
+				swal('系统提示','添加种类成功','success')
 			}else{
-				alert("添加种类失败")
+				// alert("添加种类失败")
+				swal('系统提示','添加种类失败','error')
 			}
 		},
 		updateCategory:async({state,dispatch},data)=>{
 			const res = await updateCategoryAPI(data);
 			if(res){
 				dispatch('getListAll')
-				alert("成功更新种类")
+				// alert("成功更新种类")
+				swal('系统提示','种类更新成功','success')
 			}else{
-				alert("更新种类失败")
+				// alert("更新种类失败")
+				swal('系统提示','种类更新失败','error')
 			}
 		},
 		updateRelSymbol:async({state,dispatch},data)=>{
 			const res = await updateRelSymbolAPI(data.id, data.symbol);
 			if(res){
 				dispatch('getListAll')
-				alert('成功更新关系')
+				// alert('成功更新关系')
+				swal('系统提示','更新关系成功','success')
 			}else{
-				alert('更新关系失败')
+				// alert('更新关系失败')
+				swal('系统提示','更新关系失败','error')
 			}
 		}
     }

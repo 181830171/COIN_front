@@ -176,6 +176,10 @@ export default {
           initNode();
           updatePosition();
         });
+		// myChart.on('roam',function(params){
+		// 	console.log('data zoom');
+		// 	updatePosition();
+		// })
 
 
         myChart.on('click', function (params) {
@@ -250,6 +254,11 @@ export default {
 
       },3000);
 
+		// 添加放大缩小事件
+		myChart.getZr().on('mousewheel', function () {
+			updatePosition()
+		} )
+		
       function initNode(){
         //该方法用于初始化覆盖在节点上的透明的圆，以便于拖动操作
         myChart.setOption({

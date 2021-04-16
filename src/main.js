@@ -10,6 +10,7 @@ import {Form} from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 import vcolorpicker from 'vcolorpicker'
 import qs from 'qs'
+import swal from 'sweetalert'
 
 const app = createApp(App)
 app.use(store).use(router).use(Antd).use(vuex).use(qs)
