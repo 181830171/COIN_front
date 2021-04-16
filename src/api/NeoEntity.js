@@ -113,5 +113,22 @@ export  function updateRelAPI(id,name){
     })
 }
 
+//查找节点
+export function searchNodesAPI(message){
+    return axios({
+        url:`/searchNodes`,
+        method:'POST',
+        params:{message:message}
+    })
+}
+
+//获得历史搜索信息
+export function getSearchHistoriesAPI(){
+    return axios({
+        url:`getSearchHistories`,
+        method:'GET'
+    })
+}
+
 
 
