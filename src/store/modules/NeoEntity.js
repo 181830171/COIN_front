@@ -9,7 +9,9 @@ import{
     updateRelAPI,
 	addCategoryAPI,
 	updateCategoryAPI,
-	updateRelSymbolAPI
+	updateRelSymbolAPI,
+    searchNodesAPI,
+    getSearchHistoriesAPI
 }from '../../api/NeoEntity.js'
 const NeoEntity={
     state:{
@@ -48,13 +50,18 @@ const NeoEntity={
             isSolid:true,
             des:"",
             name:""
-        }
+        },
+        searchResult:[]
     },
     mutations:{
         set_addNeoEntityParams:function(state,data){
             state.addNeoEntityParams=data
             }
         ,
+        set_searchResult:function(state,data){
+            state.searchResult=[]
+            state.searchResult=data
+        },
         set_addRelateByIdParams:function(state,data){
             state.addRelateByIdParams=data
         },
@@ -129,7 +136,8 @@ const NeoEntity={
             if(res){
                 dispatch('getListAll')
                 commit('set_currentNeoEntity',res)
-                alert("成功更新实体")
+                //alert("成功更新实体")
+                //console.log(data)
             }else{
                 alert("更新实体失败")
             }
@@ -209,7 +217,26 @@ const NeoEntity={
 			}else{
 				alert('更新关系失败')
 			}
-		}
+		},
+        //查找节点
+        searchNodes:async ({state,commit},message)=>{
+            const res=await searchNodesAPI(message);
+            if(res){
+                console.log(res)
+                commit('set_searchResult',res)
+            }else{
+                alert("未找到相关节点")
+            }
+        },
+        //获得搜索历史记录
+        getSearchHistories:async({state})=>{
+            const res=await getSearchHistoriesAPI();
+            if(res){
+                console.log("history",res)
+            }else{
+                console.log("error")
+            }
+        }
     }
 }
 export default NeoEntity
