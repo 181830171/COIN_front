@@ -51,7 +51,8 @@ const NeoEntity={
             des:"",
             name:""
         },
-        searchResult:[]
+        searchResult:[],
+        searchHistories:[]
     },
     mutations:{
         set_addNeoEntityParams:function(state,data){
@@ -77,8 +78,11 @@ const NeoEntity={
 		},
 		set_currentCategory:function(state, data){
 			state.currentCategory = data;
-		}
-
+		},
+        //设置历史记录
+        set_searchHistories:function(state,data){
+            state.searchHistories=data
+        }
     },
     actions:{
         getListAll: async ({commit})=>{
@@ -245,20 +249,22 @@ const NeoEntity={
         //查找节点
         searchNodes:async ({state,commit},message)=>{
             const res=await searchNodesAPI(message);
-            if(res){
+            if(res.length!=0){
                 console.log(res)
                 commit('set_searchResult',res)
             }else{
-                alert("未找到相关节点")
+                commit('set_searchResult',[])
+                swal('系统提示','未找到相关节点','error')
             }
         },
         //获得搜索历史记录
-        getSearchHistories:async({state})=>{
+        getSearchHistories:async({state,commit})=>{
             const res=await getSearchHistoriesAPI();
             if(res){
-                console.log("history",res)
+                console.log(res)
+                commit("set_searchHistories",res)
             }else{
-                console.log("error")
+                swal('系统提示','错误','error')
             }
         }
     }

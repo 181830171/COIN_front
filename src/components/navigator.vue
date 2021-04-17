@@ -12,7 +12,10 @@
 <!--            </ul>-->
         </li>
         <li class="btn"><a href="#" @click="handleSearch()">Search</a></li>
-        <input name="search" id="search-input" type="text" placeholder="搜索" v-model="searchText">
+        <input name="search" list="browsers" type="text" placeholder="搜索" v-model="searchText">
+            <datalist id="browsers">
+                <option v-for="reco in searchHistoryList" :value="reco"></option>
+            </datalist>
     </ul>
 	<div id="upper_edit_bar" class="w3-container w3-sand">
 		<upper-edit-bar ref="upper_edit_side"></upper-edit-bar>
@@ -33,7 +36,7 @@
     export default {
         name: "navigator",
         data(){
-            return {isAddSeen:false,isEditSeen:false,searchText:""}
+            return {isAddSeen:false,isEditSeen:false,searchText:"",searchHistoryList:[],searchResult:[]}
         },
         components:{
             Editbar,
@@ -44,6 +47,7 @@
             ...mapGetters([
                 'allEntitiesAndRelations',
                 'searchResult',
+                'searchHistories'
             ]),
             ...mapActions([
                 'searchNodes',
@@ -74,20 +78,39 @@
 
             },
             handleSearch() {
-                this.$parent.isSeen=false
-                this.$parent.searchDisplaySeen=true
+
                 const _this=this
                 this.getSearchHistories()
+                //console.log("histories2",toRaw(this.$store.state.NeoEntity).searchHistories)
+                this.searchHistoryList=toRaw(this.$store.state.NeoEntity).searchHistories
                 if (this.searchText == "") {
                     alert("请输入搜索内容")
                 } else {
+
                     this.searchNodes(this.searchText);
+                    this.getSearchHistories()
                     this.searchText = ""
+
                     setTimeout(function () {
-                        _this.$parent.draw1(toRaw(_this.$store.state.NeoEntity).searchResult,toRaw(_this.$store.state.NeoEntity).allEntitiesAndRelations.links,toRaw(_this.$store.state.NeoEntity).allEntitiesAndRelations.categories)
+                        //console.log("histories",toRaw(_this.$store.state.NeoEntity).searchHistories)
+                        _this.searchResult=toRaw(_this.$store.state.NeoEntity).searchResult
+                        console.log("searchResult",toRaw(_this.searchResult))
+                        _this.searchHistoryList=toRaw(_this.$store.state.NeoEntity).searchHistories
+                        if(toRaw(_this.searchResult).length!=0){
+                            _this.$parent.isSeen=false
+                            _this.$parent.searchDisplaySeen=true
+                            _this.$parent.draw1(toRaw(_this.$store.state.NeoEntity).searchResult,toRaw(_this.$store.state.NeoEntity).allEntitiesAndRelations.links,toRaw(_this.$store.state.NeoEntity).allEntitiesAndRelations.categories)
+                        }else{
+                            console.log("this")
+                        }
                     }, 2000)
+
                 }
             }
+        },
+        mounted(){
+            this.getSearchHistories()
+            this.searchHistoryList=toRaw(this.$store.state.NeoEntity).searchHistories
         }
     }
 </script>
