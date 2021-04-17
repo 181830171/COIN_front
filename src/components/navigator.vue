@@ -36,7 +36,7 @@
     export default {
         name: "navigator",
         data(){
-            return {isAddSeen:false,isEditSeen:false,searchText:"",searchHistoryList:[]}
+            return {isAddSeen:false,isEditSeen:false,searchText:"",searchHistoryList:[],searchResult:[]}
         },
         components:{
             Editbar,
@@ -78,20 +78,31 @@
 
             },
             handleSearch() {
-                this.$parent.isSeen=false
-                this.$parent.searchDisplaySeen=true
+
                 const _this=this
                 this.getSearchHistories()
+                //console.log("histories2",toRaw(this.$store.state.NeoEntity).searchHistories)
+                this.searchHistoryList=toRaw(this.$store.state.NeoEntity).searchHistories
                 if (this.searchText == "") {
                     alert("请输入搜索内容")
                 } else {
+
                     this.searchNodes(this.searchText);
+                    this.getSearchHistories()
                     this.searchText = ""
-                    console.log("histories",toRaw(this.$store.state.NeoEntity).searchHistories)
-                    this.searchHistoryList=toRaw(this.$store.state.NeoEntity).searchHistories
+
                     setTimeout(function () {
-                        console.log(_this.searchHistoryList)
-                        _this.$parent.draw1(toRaw(_this.$store.state.NeoEntity).searchResult,toRaw(_this.$store.state.NeoEntity).allEntitiesAndRelations.links,toRaw(_this.$store.state.NeoEntity).allEntitiesAndRelations.categories)
+                        //console.log("histories",toRaw(_this.$store.state.NeoEntity).searchHistories)
+                        _this.searchResult=toRaw(_this.$store.state.NeoEntity).searchResult
+                        console.log("searchResult",toRaw(_this.searchResult))
+                        _this.searchHistoryList=toRaw(_this.$store.state.NeoEntity).searchHistories
+                        if(toRaw(_this.searchResult).length!=0){
+                            _this.$parent.isSeen=false
+                            _this.$parent.searchDisplaySeen=true
+                            _this.$parent.draw1(toRaw(_this.$store.state.NeoEntity).searchResult,toRaw(_this.$store.state.NeoEntity).allEntitiesAndRelations.links,toRaw(_this.$store.state.NeoEntity).allEntitiesAndRelations.categories)
+                        }else{
+                            console.log("this")
+                        }
                     }, 2000)
 
                 }

@@ -240,20 +240,22 @@ const NeoEntity={
         //查找节点
         searchNodes:async ({state,commit},message)=>{
             const res=await searchNodesAPI(message);
-            if(res){
+            if(res.length!=0){
                 console.log(res)
                 commit('set_searchResult',res)
             }else{
-                alert("未找到相关节点")
+                commit('set_searchResult',[])
+                swal('系统提示','未找到相关节点','error')
             }
         },
         //获得搜索历史记录
         getSearchHistories:async({state,commit})=>{
             const res=await getSearchHistoriesAPI();
             if(res){
+                console.log(res)
                 commit("set_searchHistories",res)
             }else{
-                console.log("error")
+                swal('系统提示','错误','error')
             }
         }
     }

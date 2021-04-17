@@ -5,7 +5,7 @@
 
   <div >
 
-    <div class="w3-container " id="main" style="margin-left:18%;width: 1020px;height:700px" ref="main" @click="windowopen()" v-show="isSeen">
+    <div class="w3-container " id="main" ref="main" @click="windowopen()" v-show="isSeen">
     </div>
       <div class="w3-container " id="searchDisplay" style="margin-left:18%;width: 1020px;height:700px" v-show="searchDisplaySeen">
       </div>
@@ -35,7 +35,7 @@ export default {
 	upperEditBar
   },
   data(){
-    return {openwindow:true,searchResult:[],isSeen:true,searchDisplaySeen:false}
+    return {openwindow:true,searchResult:[],isSeen:true,searchDisplaySeen:false,myChart:{}}
   },
 
 
@@ -153,6 +153,9 @@ export default {
               };
               myChart.setOption(option);
           },3000);
+          this.getSearchHistories()
+          console.log("histories1",toRaw(this.$store.state.NeoEntity).searchHistories)
+          this.$refs.nav.searchHistoryList=toRaw(this.$store.state.NeoEntity).searchHistories
       },
     draw(){
       var test=toRaw(this.$store.state.NeoEntity)
@@ -275,6 +278,8 @@ export default {
           }],
 
         };
+        window.onresize=function(){console.log("resize,window")
+        myChart.resize()}
         myChart.setOption(option);
         myChart.on('restore',function () {
             setNode()
@@ -464,12 +469,17 @@ export default {
   },
   created() {
       this.getListAll()
+      this.getSearchHistories()
+      const _this=this
+      setTimeout(function(){
+          console.log("histories3",toRaw(_this.$store.state.NeoEntity).searchHistories)
+          _this.$refs.nav.searchHistoryList=toRaw(_this.$store.state.NeoEntity).searchHistories
+      },2000)
+
   },
   mounted() {
     this.getListAll()
     this.draw()
-    this.getSearchHistories()
-
   }
 
 }
@@ -479,4 +489,9 @@ export default {
 </script>
 <style scoped>
   @import "../assets/main.css";
+  #main{
+      margin-left: 18%;
+      width: 80%;
+      height: 700px;
+  }
 </style>
