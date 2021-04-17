@@ -1,59 +1,125 @@
 <template>
 	<div class="upper">
-			<span>节点</span><br/>
-			<span>形状</span>
-		  <a-select  :default-value="currentNeoEntity.symbol==undefined?'circle':currentNeoEntity.symbol" style="display: inline-block;" :disabled="!isEditNode" @change="handleShapeChange">
-				<template v-for="(entity_shape, index) in entity_shapes" :key="index">
-					<a-select-option :value="entity_shape[1]">
-						{{entity_shape[0]}}
-					</a-select-option>
-			  </template>			
-		  </a-select>
-
-			<span>种类</span>
-			<a-select :default-value="currentCategory==undefined?'':currentCategory.name" style="display: inline-block;" :disabled="!isEditNode">
-				<template v-for="(category, index) in allEntitiesAndRelations.categories" :key="index">
-					<a-select-option :value="category.name">
-						{{category.name}}
-					</a-select-option>
-				</template>
-			</a-select>
-			<span>颜色</span>
-			<!-- <colorPicker v-model="currentCategory.itemStyle.color" v-on:change="handleColorChange"/> -->
-			<!-- <colorPicker v-model="color_test"></colorPicker> -->
-<!-- 			<vue-color-picker-board :width="800"
-			                        :height="100"
-			                        :defaultColor="'#00AAFF'"
-			                        @onSelection="handleColorChange">
-			</vue-color-picker-board> -->
-			 <a-input type="color" :value="currentCategory.itemStyle.color" v-on:change="handleColorChange" style="height: 4px;width: 50px;" :disabled="!isEditNode"></a-input>
+		<div id="node">
+			<a-icon type="edit"></a-icon>
+			<span style="display:inline-block;width:100%; text-align: center;">节点</span><br/>
+			<div id="entity_shape">
+				<span>形状</span>
+			  <a-select  :default-value="currentNeoEntity.symbol==undefined?'circle':currentNeoEntity.symbol" style="display: inline-block;" :disabled="!isEditNode" @change="handleShapeChange">
+					<template v-for="(entity_shape, index) in entity_shapes" :key="index">
+						<a-select-option :value="entity_shape[1]">
+							{{entity_shape[0]}}
+						</a-select-option>
+					</template>			
+			  </a-select>
+			</div>
+<!-- <a-icon type="plus-square" /> -->
+		<a-modal
+		              :visible="editCategoryNameVisible"
+		              title= "修改种类名称"
+		              okText='确认'
+		              cancel-text="取消"
+		              @cancel="editCategoryNameFormCancelHandler"
+		              @ok="editCategoryNameConfirmHandler"
+		      >
+		          <a-form layout='vertical'>
+		              <a-form-item label='原名称'>
+		                  {{originalCategory.name}}
+		              </a-form-item>
+		              <a-form-item label='新名称'>
+		                  <a-input placeholder="请输入新的种类名称"  allowClear @blur="editCategoryNameFormNewCategoryNameChangeHandler"/>
+		              </a-form-item>
+					  <a-form-item label="颜色">
+						  <a-input type="color" default-value="currentCategory.itemStyle.color" @blur="handleColorChange"></a-input>
+					  </a-form-item>
+		          </a-form>
+		</a-modal>
+		
+		<a-modal 
+			:visible="addCategoryVisible"
+			title= "添加种类"
+			okText='确认'
+			cancel-text="取消"
+			@cancel="addCategoryFormCancleHandler"
+			@ok="addCategoryFormConfirmHandler"
+		>
+			<a-form layout="vertical">
+				<a-form-item label="名称">
+					<a-input placeholder="请输入种类名称" allowClear @blur="addCategoryFormNameBlurHandler" />
+				</a-form-item>
+				<a-form-item label="颜色">
+					<a-input type="color" @blur="addCategoryFormColorBlurHandler"/>
+				</a-form-item>
+			</a-form>
+		</a-modal>
+		
+			<div id="category">
+				<span style="display: inline-block;width: 100%;text-align: center;">种类</span><br/>
+				<span>名称</span>
+				<a-select ref="category_select" :default-value="currentCategory.name" style="display: inline-block; width: 120px;" :disabled="!isEditNode" @change="handleCategoryChange">
+					<template v-for="(category, index) in allEntitiesAndRelations.categories" :key="category.name">
+						<a-select-option :value="category.name">
+							{{category.name}}&nbsp;&nbsp;
+<!-- 							<a-icon type="edit" @click="editCategoryNameHandler($event, category)"/> -->
+							<img src="imgs/edit_icon.png" style="width: 15%; height: 100%; float: right;" @click="editCategoryNameHandler($event,category)"/>
+						</a-select-option>
+					</template>
+<!-- 					<a-select-option value="添加种类" @click="addCategoryHandler">
+						添加种类
+					</a-select-option> -->
+				</a-select>
+				<img src = "imgs/plus_icon.png" @click="addCategoryHandler"/>
+				<!-- <span>颜色</span> -->
+				<!-- <colorPicker v-model="currentCategory.itemStyle.color" v-on:change="handleColorChange"/> -->
+				<!-- <colorPicker v-model="color_test"></colorPicker> -->
+	<!-- 			<vue-color-picker-board :width="800"
+										:height="100"
+										:defaultColor="'#00AAFF'"
+										@onSelection="handleColorChange">
+				</vue-color-picker-board> -->
+				 
+				</div>
+			</div>
+			<div id="relation" style="width: 50%; float: left;">
 			<span>关系</span><br />
 
 			<span>起点:</span>
-			<a-select :value="currentRelation.symbol[0]" style="display: inline-block;" :disabled="!isEditRel" @change="handleStartNodeEdgeChange">
-							<template v-for="(edge_style, index) in edge_styles" :key="index">
-								<a-select-option :value="edge_style[0]">
-									{{edge_style[0]}}
-								</a-select-option>	
-						  </template>
-			</a-select>
-			
-			<span>终点:</span>
-			<a-select :value="currentRelation.symbol[1]" style="display: inline-block;" :disabled="!isEditRel" @change="handleEndNodeEdgeChange">
-							<template v-for="(edge_style, index) in edge_styles" :key="index">
-								<a-select-option :value="edge_style[0]">
-									{{edge_style[0]}}
-								</a-select-option>	
-						  </template>
-			</a-select>
+				<a-select :value="currentRelation.symbol[0]" style="display: inline-block;" :disabled="!isEditRel" @change="handleStartNodeEdgeChange">
+								<template v-for="(edge_style, index) in edge_styles" :key="index">
+									<a-select-option :value="edge_style[0]">
+										{{edge_style[0]}}
+									</a-select-option>	
+							  </template>
+				</a-select>
+				
+				<span>终点:</span>
+				<a-select :value="currentRelation.symbol[1]" style="display: inline-block;" :disabled="!isEditRel" @change="handleEndNodeEdgeChange">
+								<template v-for="(edge_style, index) in edge_styles" :key="index">
+									<a-select-option :value="edge_style[0]">
+										{{edge_style[0]}}
+									</a-select-option>	
+							  </template>
+				</a-select>
+			</div>
 	</div>
 </template>
 
 <script>
-	import {mapActions, mapGetters, mapMutations,mapState} from "vuex";
+	import {mapGetters,mapMutations,mapActions} from 'vuex'
+	import {Form} from 'ant-design-vue'
+	// const EditCategoryNameForm = {
+	// 	props:['editCategoryNameVisible','originalCategory','editCategoryNameForm'],
+	// 	// beforeCreate(){
+	// 	// 	this.form = this.$form.createForm(this, { name: 'form_in_modal' });
+	// 	// },
+	// 	template:`
+
+	// 	`
+	// }
 	export default{
 		name:'upperEditBar',
 		components:{
+			// EditCategoryNameForm,
 		},
 		data(){
 			return{
@@ -66,7 +132,22 @@
 				edge_styles:[['circle'], ['rect'], ['roundRect'], ['triangle'], ['diamond'], ['pin'], ['arrow']],
 				isEditNode:false,
 				isEditRel:false,
-				color_test:'#000000'
+				publicPath: process.env.BASE_URL,
+				// 修改种类名称
+				editCategoryNameVisible:false,
+				originalCategory:{
+					name:'',
+				},
+				editCategoryNameForm:{
+					newName:'',
+					newColor:'',
+				},
+				// 添加种类
+				addCategoryVisible:false,
+				addCategoryForm:{
+					name:'',
+					color:"",
+				}
 			}
 		},
 		
@@ -79,12 +160,16 @@
 		  ])
 		},
 		methods:{
+			...mapMutations([
+				'set_currentCategory'
+			]),
 			...mapActions([
 				'getListAll',
 				'addCategory',
 				'updateCategory',
 				'updateNeoEntityByEntity',
-				'updateRelSymbol'
+				'updateRelSymbol',
+				'updateNeoEntityByCategory',
 			]),
 			handleShapeChange(e){
 				console.log('click shape change', e);
@@ -128,6 +213,7 @@
 			handleColorChange(e){
 				console.log('click color change', e);
 				console.log('currentCategory',this.currentCategory);
+				this.currentCategory.itemStyle.color = e.target.value;
 				const data = {
 					id: this.currentCategory.categoryId,
 					name:this.currentCategory.name,
@@ -136,6 +222,82 @@
 				console.log('target value',e.target.value);
 				this.updateCategory(data);
 				this.$parent.$parent.draw();
+			},
+			handleCategoryChange(e){
+				console.log('category change',e)
+				console.log('currentCategory', this.currentCategory.name)
+				// if(e=="添加种类"){
+				// 	this.$refs.category_select.value = this.currentCategory.name;
+				// 	return;
+				// }
+				this.updateNeoEntityByCategory(e)
+				this.$parent.$parent.draw();
+			},
+			// 修改种类名称
+			editCategoryNameHandler(e,category){
+				e.stopPropagation();
+				console.log('category',category)
+				this.originalCategory = category;
+				this.editCategoryNameVisible = true;
+			},
+			editCategoryNameFormCancelHandler(){
+				this.editCategoryNameVisible=false;
+			},
+			editCategoryNameConfirmHandler(){
+				console.log("新名称", this.editCategoryNameForm.newName)
+				if(this.editCategoryNameForm.newName == ''){
+					alert("请输入新的名称");
+					return;
+				};
+				
+				const data = {
+					id: this.originalCategory.categoryId,
+					name:this.editCategoryNameForm.newName,
+					color:this.originalCategory.itemStyle.color
+				};
+				console.log('data', data);
+				if(this.originalCategory.name==this.currentCategory.name){
+					this.set_currentCategory({
+						categoryId:this.currentCategory.categoryId,
+						name:this.editCategoryNameForm.newName,
+						itemStyle:this.currentCategory.itemStyle,
+					})
+				}
+				this.updateCategory(data);
+				this.$parent.$parent.draw();
+				this.editCategoryNameForm.newName = '';
+				
+				this.editCategoryNameVisible = false;
+				
+			},
+			editCategoryNameFormNewCategoryNameChangeHandler(e){
+				this.editCategoryNameForm.newName = e.srcElement.value;
+				console.log('blur', e)
+			},
+			
+			// 添加种类
+			addCategoryHandler(e){
+				this.addCategoryVisible = true;
+				// e.stopPropagation();
+				// e.preventDefault();
+			},
+			addCategoryFormCancleHandler(e){
+				this.addCategoryVisible = false;
+			},
+			addCategoryFormConfirmHandler(e){
+				this.addCategoryVisible = false;
+				this.addCategory({
+					name:this.addCategoryForm.name,
+					color:this.addCategoryForm.color,
+				})
+			},			
+			addCategoryFormNameBlurHandler(e){
+				console.log('name blur', e);
+				this.addCategoryForm.name = e.srcElement.value;
+			},
+			addCategoryFormColorBlurHandler(e){
+				console.log('color blur', e)
+				this.addCategoryForm.color = e.target.value;
 			}
 		},
 		created() {
@@ -144,6 +306,19 @@
 	}
 </script>
 
-<style>
-
+<style scoped>
+#node{
+	 width: 50%;
+	 float: left;
+	 font-size: 100%;
+}
+#entity_shape{
+	width: 35%;
+	float: left;
+}
+#category{
+	width: 65%;
+	float: left;
+	font-size: 50%;
+}
 </style>

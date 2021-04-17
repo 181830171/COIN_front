@@ -211,9 +211,18 @@ const NeoEntity={
 				swal('系统提示','添加种类失败','error')
 			}
 		},
-		updateCategory:async({state,dispatch},data)=>{
+		updateCategory:async({state,commit,dispatch},data)=>{
 			const res = await updateCategoryAPI(data);
 			if(res){
+				if(data.id==state.currentCategory.categoryId){
+					commit('set_currentCategory',{
+						categoryId:data.id,
+						name:data.name,
+						itemStyle:{
+							color:data.color,
+						}
+					})
+				}
 				dispatch('getListAll')
 				// alert("成功更新种类")
 				swal('系统提示','种类更新成功','success')
