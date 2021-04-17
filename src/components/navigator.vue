@@ -2,6 +2,7 @@
 	<div>
     <ul class="all">
         <li class='title' style="float: left">COIN</li>
+
         <li class="btn"><a href="#" @click="export2JSON()">Export</a></li>
         <li class="btn">
             <a href="#" class="add" @click="add()">Add</a>
@@ -10,7 +11,11 @@
 <!--                <li class="insideAdd"><a>新增实体</a></li>-->
 <!--            </ul>-->
         </li>
-        <li class="btn"><a href="#">Search</a></li>
+        <li class="btn"><a href="#" @click="handleSearch()">Search</a></li>
+        <input name="search" list="browsers" type="text" placeholder="搜索" v-model="searchText">
+            <datalist id="browsers">
+                <option v-for="reco in searchHistoryList" :value="reco"></option>
+            </datalist>
     </ul>
 	<div id="upper_edit_bar" class="w3-container w3-sand">
 		<upper-edit-bar ref="upper_edit_side"></upper-edit-bar>
@@ -23,47 +28,78 @@
 <script>
     import sidebar from "./sidebar";
     import Editbar from "./editbar";
+    import {Input,Space} from 'ant-design-vue'
+    import {AudioOutLined} from '@ant-design/icons-vue'
     import {mapActions,mapGetters} from 'vuex';
     import {toRaw} from "@vue/reactivity";
 	import upperEditBar from "./upperEditBar.vue";
     export default {
         name: "navigator",
         data(){
-            return {isAddSeen:false,isEditSeen:false}
+            return {isAddSeen:false,isEditSeen:false,searchText:"",searchHistoryList:[]}
         },
         components:{
             Editbar,
             sidebar,
 			upperEditBar,
         },
-        methods:{
-          ...mapGetters([
-            'allEntitiesAndRelations'
-        ]),
-        add(){
-           this.isAddSeen=true;
-            this.isEditSeen=false;
-        },
-        edit(){
-            this.isEditSeen=true;
-            this.isAddSeen=false;
-        },
-        export2JSON(){
-          var test=toRaw(this.$store.state.NeoEntity)
-          alert("开始导出JSON文件，请耐心等候！")
-          var eleLink = document.createElement('a');
-          eleLink.download = 'data.json';
-          eleLink.style.display = 'none';
-          // 字符内容转变成blob地址
-          var blob = new Blob([JSON.stringify(test.allEntitiesAndRelations)]);
-          eleLink.href = URL.createObjectURL(blob);
-          // 触发点击
-          document.body.appendChild(eleLink);
-          eleLink.click();
-          // 然后移除
-          document.body.removeChild(eleLink);
+        methods: {
+            ...mapGetters([
+                'allEntitiesAndRelations',
+                'searchResult',
+                'searchHistories'
+            ]),
+            ...mapActions([
+                'searchNodes',
+                'getSearchHistories'
+            ]),
+            add() {
+                this.isAddSeen = true;
+                this.isEditSeen = false;
+            },
+            edit() {
+                this.isEditSeen = true;
+                this.isAddSeen = false;
+            },
+            export2JSON() {
+                var test = toRaw(this.$store.state.NeoEntity)
+                alert("开始导出JSON文件，请耐心等候！")
+                var eleLink = document.createElement('a');
+                eleLink.download = 'data.json';
+                eleLink.style.display = 'none';
+                // 字符内容转变成blob地址
+                var blob = new Blob([JSON.stringify(test.allEntitiesAndRelations)]);
+                eleLink.href = URL.createObjectURL(blob);
+                // 触发点击
+                document.body.appendChild(eleLink);
+                eleLink.click();
+                // 然后移除
+                document.body.removeChild(eleLink);
 
-        }
+            },
+            handleSearch() {
+                this.$parent.isSeen=false
+                this.$parent.searchDisplaySeen=true
+                const _this=this
+                this.getSearchHistories()
+                if (this.searchText == "") {
+                    alert("请输入搜索内容")
+                } else {
+                    this.searchNodes(this.searchText);
+                    this.searchText = ""
+                    console.log("histories",toRaw(this.$store.state.NeoEntity).searchHistories)
+                    this.searchHistoryList=toRaw(this.$store.state.NeoEntity).searchHistories
+                    setTimeout(function () {
+                        console.log(_this.searchHistoryList)
+                        _this.$parent.draw1(toRaw(_this.$store.state.NeoEntity).searchResult,toRaw(_this.$store.state.NeoEntity).allEntitiesAndRelations.links,toRaw(_this.$store.state.NeoEntity).allEntitiesAndRelations.categories)
+                    }, 2000)
+
+                }
+            }
+        },
+        mounted(){
+            this.getSearchHistories()
+            this.searchHistoryList=toRaw(this.$store.state.NeoEntity).searchHistories
         }
     }
 </script>
@@ -77,7 +113,16 @@
         background-color: #333;
 		height: 7%;
     }
-
+    ul input{
+        width:300px;
+        float:right;
+        height: 40px;
+        position:relative;
+        top:15px;
+        font-size: 20px;
+        border-radius: 20px;
+        text-indent: 5px;
+    }
     li.btn {
         float: right;
     }

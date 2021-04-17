@@ -78,6 +78,7 @@
 					  symbol:this.currentNeoEntity.symbol,
                     }
                     this.updateNeoEntityByEntity(data);
+                    alert("成功更新节点")
                     this.$parent.$parent.draw();
                   }else{
                     const data={
