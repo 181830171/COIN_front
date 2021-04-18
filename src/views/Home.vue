@@ -5,7 +5,7 @@
 
   <div >
 
-    <div class="w3-container " id="main" style="margin-left:18%;width: 1020px;height:700px" ref="main" @click="windowopen()" v-show="isSeen">
+    <div class="w3-container " id="main" ref="main" @click="windowopen()" v-show="isSeen">
     </div>
       <div class="w3-container " id="searchDisplay" style="margin-left:18%;width: 1020px;height:700px" v-show="searchDisplaySeen">
       </div>
@@ -35,7 +35,7 @@ export default {
 	upperEditBar
   },
   data(){
-    return {openwindow:true,searchResult:[],isSeen:true,searchDisplaySeen:false}
+    return {openwindow:true,searchResult:[],isSeen:true,searchDisplaySeen:false,myChart:{}}
   },
 
 
@@ -44,14 +44,20 @@ export default {
         'allEntitiesAndRelations',
 		'currentNeoEntity',
 		'currentRelation',
-		'currentCategory'
-    ])
+		'currentCategory',
+		'globalNodeFontSize',
+		'globalRelFontSize',
+		'globalIsShowNodeLabel',
+		'globalIsShowRelLabel',
+    ]),
   },
   methods:{
 	...mapMutations([
 		'set_currentNeoEntity',
 		'set_currentRelation',
 		'set_currentCategory',
+		'set_globalNodeFontSize',
+		'set_globalIsShowNodeLabel'
 	]),
     ...mapActions([
       'getListAll',
@@ -63,6 +69,9 @@ export default {
       draw1(nodes,links,cate){
 	      this.isSeen=false
           this.searchDisplaySeen=true
+          this.getSearchHistories()
+          console.log("histories1",toRaw(this.$store.state.NeoEntity).searchHistories)
+          this.$refs.nav.searchHistoryList=toRaw(this.$store.state.NeoEntity).searchHistories
 	      console.log("hi")
           var myChart = echarts.init(document.getElementById('searchDisplay'));
           myChart.showLoading();
@@ -103,7 +112,7 @@ export default {
                       //layout:'circular',//环形布局
                       //layout: 'none',
                       symbolSize: 50, // 调整节点的大小
-                      roam: true, // 是否开启鼠标缩放和平移漫游。默认不开启。如果只想要开启缩放或者平移,可以设置成 'scale' 或者 'move'。设置成 true 为都开启
+                      roam: 'scale', // 是否开启鼠标缩放和平移漫游。默认不开启。如果只想要开启缩放或者平移,可以设置成 'scale' 或者 'move'。设置成 true 为都开启
                       edgeSymbol: ['arrow', 'arrow'],
                       edgeSymbolSize: [2, 10],
                       smooth: false,   //关键点，为true是不支持虚线的，实线就用true
@@ -153,6 +162,7 @@ export default {
               };
               myChart.setOption(option);
           },3000);
+
       },
     draw(){
       var test=toRaw(this.$store.state.NeoEntity)
@@ -233,10 +243,10 @@ export default {
             edgeLabel: {
               normal: {
                 textStyle: {
-                  fontSize: 14
+                  fontSize: _this.globalRelFontSize
                 },
-
-                show: true,
+				
+                show: _this.globalIsShowRelLabel,
                 formatter: function (x) {
                   return x.data.name;
                 }
@@ -259,8 +269,10 @@ export default {
             },
             label: {
               normal: {
-                show: true,
-                textStyle: {}
+                show: _this.globalIsShowNodeLabel,
+                textStyle: {
+					fontSize:_this.globalNodeFontSize
+				}
               }
             },
             //鼠标局部高亮
@@ -275,6 +287,8 @@ export default {
           }],
 
         };
+        window.onresize=function(){console.log("resize,window")
+        myChart.resize()}
         myChart.setOption(option);
         myChart.on('restore',function () {
             setNode()
@@ -326,7 +340,7 @@ export default {
 				name:category.name,
 				itemStyle:category.itemStyle,
 			});
-
+			
 			// 更新upper_edit_side
 			_this.$refs.nav.$refs.upper_edit_side.isEditNode = true;
 			_this.$refs.nav.$refs.upper_edit_side.isEditRel = false;
@@ -349,12 +363,12 @@ export default {
             console.log(params.data.name);
             console.log(params.data.id);
             console.log(params);
-
+			
 			_this.$refs.nav.$refs.upper_edit_side.isEditNode = false;
 			_this.$refs.nav.$refs.upper_edit_side.isEditRel = true;
 			console.log('you click an edge', params);
 			console.log('category', _this.currentCategory)
-
+			
           }else{
 			  _this.$refs.nav.$refs.upper_edit_side.isEditNode = false;
 			  _this.$refs.nav.$refs.upper_edit_side.isEditRel = false;
@@ -394,6 +408,7 @@ export default {
       }
       function onPointDragging(dataIndex, pos) {
         //每次拖动时，修改节点的x,y值并重新绘制
+		console.log('drag event')
         nodes[dataIndex].x = myChart.convertFromPixel('series', pos)[0];
         nodes[dataIndex].y = myChart.convertFromPixel('series', pos)[1];
         myChart.setOption({
@@ -464,12 +479,19 @@ export default {
   },
   created() {
       this.getListAll()
+      this.getSearchHistories()
+      const _this=this
+      setTimeout(function(){
+          console.log("histories3",toRaw(_this.$store.state.NeoEntity).searchHistories)
+          _this.$refs.nav.searchHistoryList=toRaw(_this.$store.state.NeoEntity).searchHistories
+      },2000)
+
   },
   mounted() {
     this.getListAll()
     this.draw()
-    this.getSearchHistories()
-
+      this.getSearchHistories()
+      this.$refs.nav.searchHistoryList=toRaw(this.$store.state.NeoEntity).searchHistories
   }
 
 }
@@ -479,4 +501,9 @@ export default {
 </script>
 <style scoped>
   @import "../assets/main.css";
+  #main{
+      margin-left: 18%;
+      width: 80%;
+      height: 700px;
+  }
 </style>

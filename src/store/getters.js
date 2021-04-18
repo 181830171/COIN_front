@@ -7,6 +7,10 @@ const getters={
 	currentCategory:state=>state.NeoEntity.currentCategory,
 	currentRelation:state=>state.NeoEntity.currentRelation,
     searchResult:state=>state.NeoEntity.searchResult,
-    searchHistories:state=>state.NeoEntity.searchHistories
+    searchHistories:state=>state.NeoEntity.searchHistories,
+	globalNodeFontSize:state=>state.NeoEntity.globalNodeFontSize,
+	globalRelFontSize:state=>state.NeoEntity.globalRelFontSize,
+	globalIsShowNodeLabel:state=>state.NeoEntity.globalIsShowNodeLabel,
+	globalIsShowRelLabel:state=>state.NeoEntity.globalIsShowRelLabel,
 }
 export default getters

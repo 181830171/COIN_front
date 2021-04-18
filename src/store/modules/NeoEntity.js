@@ -25,7 +25,9 @@ const NeoEntity={
             des:"",
             category:0
         },
-        currentNeoEntity:{},
+        currentNeoEntity:{
+			symbolSize:50,
+		},
 		currentRelation:{
 			id:-1,
 			source:'',
@@ -44,6 +46,10 @@ const NeoEntity={
 				color:'#000000'
 			}
 		},
+		globalNodeFontSize:14,
+		globalRelFontSize:14,
+		globalIsShowNodeLabel:false,
+		globalIsShowRelLabel:false,
         addRelateByIdParams:{
             from:0,
             to:0,
@@ -79,10 +85,26 @@ const NeoEntity={
 		set_currentCategory:function(state, data){
 			state.currentCategory = data;
 		},
+		set_globalNodeFontSize:function(state, data){
+			state.globalNodeFontSize = data;
+		},
+		set_globalRelFontSize:function(state,data){
+			state.globalRelFontSize = data;
+		},
+		set_globalIsShowNodeLabel:function(state, data){
+			state.globalIsShowNodeLabel = data;
+		},
+		set_globalIsShowRelLabel:function(state,data){
+			state.globalIsShowRelLabel = data
+		},
         //设置历史记录
         set_searchHistories:function(state,data){
             state.searchHistories=data
-        }
+        },
+		// 更新symbolSize
+		set_currentNeoEntitySymbolSize:function(state, data){
+			state.currentNeoEntity.symbolSize = data
+		}
     },
     actions:{
         getListAll: async ({commit})=>{
@@ -118,10 +140,11 @@ const NeoEntity={
 				swal('系统提示','添加关系失败','error')
             }
         },
-        deleteNeoEntityById:async ({state,dispatch},data)=>{
+        deleteNeoEntityById:async ({state,commit,dispatch},data)=>{
             const res=await deleteNeoEntityByIdAPI(data.id);
             if(res){
                 dispatch('getListAll')
+				commit('set_currentNeoEntity',{})
                 swal('系统提示',"成功删除节点",'success')
             }else{
                 swal('系统提示','删除节点失败','error')
@@ -132,6 +155,7 @@ const NeoEntity={
             if(res){
                 dispatch('getListAll')
                 // alert("成功删除关系")
+				commit('set_currentRelation',{})
 				swal('系统提示','删除关系成功','success')
                 console.log("成功删除关系")
             }else{
@@ -215,9 +239,18 @@ const NeoEntity={
 				swal('系统提示','添加种类失败','error')
 			}
 		},
-		updateCategory:async({state,dispatch},data)=>{
+		updateCategory:async({state,commit,dispatch},data)=>{
 			const res = await updateCategoryAPI(data);
 			if(res){
+				if(data.id==state.currentCategory.categoryId){
+					commit('set_currentCategory',{
+						categoryId:data.id,
+						name:data.name,
+						itemStyle:{
+							color:data.color,
+						}
+					})
+				}
 				dispatch('getListAll')
 				// alert("成功更新种类")
 				swal('系统提示','种类更新成功','success')
@@ -240,20 +273,22 @@ const NeoEntity={
         //查找节点
         searchNodes:async ({state,commit},message)=>{
             const res=await searchNodesAPI(message);
-            if(res){
+            if(res.length!=0){
                 console.log(res)
                 commit('set_searchResult',res)
             }else{
-                alert("未找到相关节点")
+                commit('set_searchResult',[])
+                swal('系统提示','未找到相关节点','error')
             }
         },
         //获得搜索历史记录
         getSearchHistories:async({state,commit})=>{
             const res=await getSearchHistoriesAPI();
             if(res){
+                console.log('返回历史', res)
                 commit("set_searchHistories",res)
             }else{
-                console.log("error")
+                swal('系统提示','错误','error')
             }
         }
     }
