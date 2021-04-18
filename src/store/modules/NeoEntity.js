@@ -261,7 +261,7 @@ const NeoEntity={
         getSearchHistories:async({state,commit})=>{
             const res=await getSearchHistoriesAPI();
             if(res){
-                console.log(res)
+                //console.log(res)
                 commit("set_searchHistories",res)
             }else{
                 swal('系统提示','错误','error')

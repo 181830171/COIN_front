@@ -92,9 +92,8 @@
                     this.searchText = ""
 
                     setTimeout(function () {
-                        //console.log("histories",toRaw(_this.$store.state.NeoEntity).searchHistories)
+                        console.log("histories",toRaw(_this.$store.state.NeoEntity).searchHistories)
                         _this.searchResult=toRaw(_this.$store.state.NeoEntity).searchResult
-                        console.log("searchResult",toRaw(_this.searchResult))
                         _this.searchHistoryList=toRaw(_this.$store.state.NeoEntity).searchHistories
                         if(toRaw(_this.searchResult).length!=0){
                             _this.$parent.isSeen=false
