@@ -44,14 +44,18 @@ export default {
         'allEntitiesAndRelations',
 		'currentNeoEntity',
 		'currentRelation',
-		'currentCategory'
-    ])
+		'currentCategory',
+		'globalFontSize',
+		'globalIsShowLabel'
+    ]),
   },
   methods:{
 	...mapMutations([
 		'set_currentNeoEntity',
 		'set_currentRelation',
 		'set_currentCategory',
+		'set_globalFontSize',
+		'set_globalIsShowLabel'
 	]),
     ...mapActions([
       'getListAll',
@@ -106,7 +110,7 @@ export default {
                       //layout:'circular',//环形布局
                       //layout: 'none',
                       symbolSize: 50, // 调整节点的大小
-                      roam: true, // 是否开启鼠标缩放和平移漫游。默认不开启。如果只想要开启缩放或者平移,可以设置成 'scale' 或者 'move'。设置成 true 为都开启
+                      roam: 'scale', // 是否开启鼠标缩放和平移漫游。默认不开启。如果只想要开启缩放或者平移,可以设置成 'scale' 或者 'move'。设置成 true 为都开启
                       edgeSymbol: ['arrow', 'arrow'],
                       edgeSymbolSize: [2, 10],
                       smooth: false,   //关键点，为true是不支持虚线的，实线就用true
@@ -237,10 +241,10 @@ export default {
             edgeLabel: {
               normal: {
                 textStyle: {
-                  fontSize: 14
+                  fontSize: _this.globalFontSize
                 },
 				
-                show: true,
+                show: _this.globalIsShowLabel,
                 formatter: function (x) {
                   return x.data.name;
                 }
@@ -263,8 +267,10 @@ export default {
             },
             label: {
               normal: {
-                show: true,
-                textStyle: {}
+                show: _this.globalIsShowLabel,
+                textStyle: {
+					fontSize:_this.globalFontSize
+				}
               }
             },
             //鼠标局部高亮
@@ -400,6 +406,7 @@ export default {
       }
       function onPointDragging(dataIndex, pos) {
         //每次拖动时，修改节点的x,y值并重新绘制
+		console.log('drag event')
         nodes[dataIndex].x = myChart.convertFromPixel('series', pos)[0];
         nodes[dataIndex].y = myChart.convertFromPixel('series', pos)[1];
         myChart.setOption({
