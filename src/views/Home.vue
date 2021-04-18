@@ -45,8 +45,10 @@ export default {
 		'currentNeoEntity',
 		'currentRelation',
 		'currentCategory',
-		'globalFontSize',
-		'globalIsShowLabel'
+		'globalNodeFontSize',
+		'globalRelFontSize',
+		'globalIsShowNodeLabel',
+		'globalIsShowRelLabel',
     ]),
   },
   methods:{
@@ -54,8 +56,8 @@ export default {
 		'set_currentNeoEntity',
 		'set_currentRelation',
 		'set_currentCategory',
-		'set_globalFontSize',
-		'set_globalIsShowLabel'
+		'set_globalNodeFontSize',
+		'set_globalIsShowNodeLabel'
 	]),
     ...mapActions([
       'getListAll',
@@ -241,10 +243,10 @@ export default {
             edgeLabel: {
               normal: {
                 textStyle: {
-                  fontSize: _this.globalFontSize
+                  fontSize: _this.globalRelFontSize
                 },
 				
-                show: _this.globalIsShowLabel,
+                show: _this.globalIsShowRelLabel,
                 formatter: function (x) {
                   return x.data.name;
                 }
@@ -267,9 +269,9 @@ export default {
             },
             label: {
               normal: {
-                show: _this.globalIsShowLabel,
+                show: _this.globalIsShowNodeLabel,
                 textStyle: {
-					fontSize:_this.globalFontSize
+					fontSize:_this.globalNodeFontSize
 				}
               }
             },

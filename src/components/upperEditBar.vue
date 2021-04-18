@@ -84,19 +84,37 @@
 			</div>
 		</div>
 		
-		<div id="upper_edit_label">
+		<div id="upper_edit_node_label">
 			<span style="display:block;width:100%; text-align: left; margin-bottom: 2px;">
-				<span>标签</span>
-				<a-switch checked-children="显示" un-checked-children="隐藏" v-model:checked="globalIsShowLabel" />
+				<span>节点标签</span>
+				<a-switch checked-children="显示" un-checked-children="隐藏" v-model:checked="globalIsShowNodeLabel" />
 			</span>
-			<div id="upper_edit_label_size">
+			<div id="upper_edit_node_label_size">
 				<span>标签大小:</span>
 				<a-row>
 				  <a-col :span="12">
-					<a-slider v-model:value="globalFontSize" :min="8" :max="30" @blur="globalFontSizeChangeHandler"/>
+					<a-slider v-model:value="globalNodeFontSize" :min="8" :max="30" @blur="globalNodeFontSizeChangeHandler"/>
 				  </a-col>
 				  <a-col :span="4">
-					<a-input-number v-model:value="globalFontSize" :min="8" :max="30" style="marginLeft: 16px" @blur="globalFontSizeChangeHandler"/>
+					<a-input-number v-model:value="globalNodeFontSize" :min="8" :max="30" style="marginLeft: 16px" @blur="globalNodeFontSizeChangeHandler"/>
+				  </a-col>
+				</a-row>
+			</div>
+		</div>
+		
+		<div id="upper_edit_rel_label">
+			<span style="display:block;width:100%; text-align: left; margin-bottom: 2px;">
+				<span>关系标签</span>
+				<a-switch checked-children="显示" un-checked-children="隐藏" v-model:checked="globalIsShowRelLabel" />
+			</span>
+			<div id="upper_edit_rel_label_size">
+				<span>标签大小:</span>
+				<a-row>
+				  <a-col :span="12">
+					<a-slider v-model:value="globalRelFontSize" :min="8" :max="30" @blur="globalRelFontSizeChangeHandler"/>
+				  </a-col>
+				  <a-col :span="4">
+					<a-input-number v-model:value="globalRelFontSize" :min="8" :max="30" style="marginLeft: 16px" @blur="globalRelFontSizeChangeHandler"/>
 				  </a-col>
 				</a-row>
 			</div>
@@ -209,22 +227,39 @@
 				  // this.$store.dispatch('updateNeoEntityByEntity', this.$store.state.NeoEntity.currentNeoEntity)
 			  }
 		  },
-		  globalFontSize:{
+		  globalNodeFontSize:{
 			  get(){
-				  return this.$store.state.NeoEntity.globalFontSize
+				  return this.$store.state.NeoEntity.globalNodeFontSize
 			  },
 			  set(value){
-				  this.$store.commit('set_globalFontSize',value)
+				  this.$store.commit('set_globalNodeFontSize',value)
 			  }
 		  },
-		  globalIsShowLabel:{
+		  globalRelFontSize:{
+		  			  get(){
+		  				  return this.$store.state.NeoEntity.globalRelFontSize
+		  			  },
+		  			  set(value){
+		  				  this.$store.commit('set_globalRelFontSize',value)
+		  			  }
+		  },
+		  globalIsShowNodeLabel:{
 			  get(){
-				  return this.$store.state.NeoEntity.globalIsShowLabel
+				  return this.$store.state.NeoEntity.globalIsShowNodeLabel
 			  },
 			  set(value){
-				  this.$store.commit('set_globalIsShowLabel',value)
+				  this.$store.commit('set_globalIsShowNodeLabel',value)
 				  this.$parent.$parent.draw()
 			  }
+		  },
+		  globalIsShowRelLabel:{
+		  			  get(){
+		  				  return this.$store.state.NeoEntity.globalIsShowRelLabel
+		  			  },
+		  			  set(value){
+		  				  this.$store.commit('set_globalIsShowRelLabel',value)
+		  				  this.$parent.$parent.draw()
+		  			  }
 		  },
 		},
 		methods:{
@@ -375,7 +410,10 @@
 				this.updateNeoEntityByEntity(this.$store.state.NeoEntity.currentNeoEntity)
 				this.$parent.$parent.draw()
 			},
-			globalFontSizeChangeHandler(){
+			globalNodeFontSizeChangeHandler(){
+				this.$parent.$parent.draw()
+			},
+			globalRelFontSizeChangeHandler(){
 				this.$parent.$parent.draw()
 			},
 			
@@ -475,7 +513,7 @@
 	height: 100%;
 	float: left;
 	border-right: 1px solid #008080;
-	margin-left: 5px;
+	margin-left: 10px;
 }
 #upper_edit_relation_startnode{
 	width: 40%;
@@ -491,15 +529,28 @@
 	margin-bottom: 2px;
 }
 
-#upper_edit_label{
+#upper_edit_node_label{
 	width: 25%;
 	float:left;
-	height: 100%;
+	height: 50%;
 	font-size: 50%;
-	margin-left: 5px;
+	margin-left: 10px;
 }
 
-#upper_edit_label_size{
+#upper_edit_node_label_size{
+	width: 100%;
+	margin-top: 2px;
+}
+
+#upper_edit_rel_label{
+	width: 25%;
+	float: left;
+	height: 50%;
+	font-size: 50%;
+	margin-left: 10px;
+}
+
+#upper_edit_rel_label_size{
 	width: 100%;
 	margin-top: 2px;
 }

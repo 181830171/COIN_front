@@ -8,7 +8,9 @@ const getters={
 	currentRelation:state=>state.NeoEntity.currentRelation,
     searchResult:state=>state.NeoEntity.searchResult,
     searchHistories:state=>state.NeoEntity.searchHistories,
-	globalFontSize:state=>state.NeoEntity.globalFontSize,
-	globalIsShowLabel:state=>state.NeoEntity.globalIsShowLabel
+	globalNodeFontSize:state=>state.NeoEntity.globalNodeFontSize,
+	globalRelFontSize:state=>state.NeoEntity.globalRelFontSize,
+	globalIsShowNodeLabel:state=>state.NeoEntity.globalIsShowNodeLabel,
+	globalIsShowRelLabel:state=>state.NeoEntity.globalIsShowRelLabel,
 }
 export default getters

@@ -46,8 +46,10 @@ const NeoEntity={
 				color:'#000000'
 			}
 		},
-		globalFontSize:14,
-		globalIsShowLabel:false,
+		globalNodeFontSize:14,
+		globalRelFontSize:14,
+		globalIsShowNodeLabel:false,
+		globalIsShowRelLabel:false,
         addRelateByIdParams:{
             from:0,
             to:0,
@@ -83,11 +85,17 @@ const NeoEntity={
 		set_currentCategory:function(state, data){
 			state.currentCategory = data;
 		},
-		set_globalFontSize:function(state, data){
-			state.globalFontSize = data;
+		set_globalNodeFontSize:function(state, data){
+			state.globalNodeFontSize = data;
 		},
-		set_globalIsShowLabel:function(state, data){
-			state.globalIsShowLabel = data;
+		set_globalRelFontSize:function(state,data){
+			state.globalRelFontSize = data;
+		},
+		set_globalIsShowNodeLabel:function(state, data){
+			state.globalIsShowNodeLabel = data;
+		},
+		set_globalIsShowRelLabel:function(state,data){
+			state.globalIsShowRelLabel = data
 		},
         //设置历史记录
         set_searchHistories:function(state,data){

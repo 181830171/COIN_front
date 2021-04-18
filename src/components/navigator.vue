@@ -166,7 +166,7 @@
         left:0px;
     }
 	#upper_edit_bar{
-		height: 130px;
+		height: 150px;
 	}
 
 
