@@ -58,7 +58,7 @@
                 this.isEditSeen = false;
             },
             edit() {
-                this.isEditSeen = true;
+                // this.isEditSeen = true;
                 this.isAddSeen = false;
             },
             export2JSON() {
@@ -88,9 +88,11 @@
                 } else {
 
                     this.searchNodes(this.searchText);
-                    this.getSearchHistories()
                     this.searchText = ""
 
+					setTimeout(function(){
+						_this.getSearchHistories()
+					},1000)
                     setTimeout(function () {
                         console.log("histories",toRaw(_this.$store.state.NeoEntity).searchHistories)
                         _this.searchResult=toRaw(_this.$store.state.NeoEntity).searchResult
@@ -166,7 +168,7 @@
         left:0px;
     }
 	#upper_edit_bar{
-		height: 150px;
+		height: 120px;
 	}
 
 

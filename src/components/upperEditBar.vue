@@ -44,9 +44,12 @@
 							 
 			</div>
 			<div id="entity_size">
-				<span>大小:&nbsp;</span>
+				
 				<a-row>
-				  <a-col :span="12">
+					<a-col :span="4">
+						<span>大小:&nbsp;</span>
+					</a-col>
+				  <a-col :span="8">
 					<a-slider v-model:value="currentSymbolSize" :min="20" :max="70" :disabled="!isEditNode" @blur="handleSymbolSizeChange"/>
 				  </a-col>
 				  <a-col :span="4">
@@ -58,7 +61,7 @@
 		
 		<!-- 关系 -->
 		<div id="upper_edit_relation">
-			<span style="display:block;width:100%; text-align: left;">
+			<span style="display:block;width:100%; text-align: left;margin-left: 10px;">
 				关系:{{currentRelation.name==undefined?'':currentRelation.name}}
 				<a-button type="danger" @click="deleteRelationHandler" :disabled="!isEditRel">删除</a-button>
 			</span>
@@ -90,9 +93,12 @@
 				<a-switch checked-children="显示" un-checked-children="隐藏" v-model:checked="globalIsShowNodeLabel" />
 			</span>
 			<div id="upper_edit_node_label_size">
-				<span>标签大小:</span>
+				
 				<a-row>
-				  <a-col :span="12">
+					<a-col :span="6">
+						<span>标签大小:</span>
+					</a-col>
+				  <a-col :span="8">
 					<a-slider v-model:value="globalNodeFontSize" :min="8" :max="30" @blur="globalNodeFontSizeChangeHandler"/>
 				  </a-col>
 				  <a-col :span="4">
@@ -108,9 +114,12 @@
 				<a-switch checked-children="显示" un-checked-children="隐藏" v-model:checked="globalIsShowRelLabel" />
 			</span>
 			<div id="upper_edit_rel_label_size">
-				<span>标签大小:</span>
+				
 				<a-row>
-				  <a-col :span="12">
+					<a-col :span="6">
+						<span>标签大小:</span>
+					</a-col>
+				  <a-col :span="8">
 					<a-slider v-model:value="globalRelFontSize" :min="8" :max="30" @blur="globalRelFontSizeChangeHandler"/>
 				  </a-col>
 				  <a-col :span="4">
@@ -518,14 +527,15 @@
 #upper_edit_relation_startnode{
 	width: 40%;
 	float: left;
-	margin-top: 2px;
+	margin-top: 20px;
+	margin-left: 10px;
 	margin-bottom: 2px;
 }
 #upper_edit_relation_endnode{
 	width: 40%;
 	float: left;
 	margin-left: 10px;
-	margin-top: 2px;
+	margin-top: 20px;
 	margin-bottom: 2px;
 }
 
