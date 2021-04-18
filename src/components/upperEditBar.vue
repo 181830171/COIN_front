@@ -30,7 +30,7 @@
 		                  <a-input placeholder="请输入新的种类名称"  allowClear @blur="editCategoryNameFormNewCategoryNameChangeHandler"/>
 		              </a-form-item>
 					  <a-form-item label="颜色">
-						  <a-input type="color" default-value="currentCategory.itemStyle.color" @blur="handleColorChange"></a-input>
+						  <a-input type="color" :default-value="currentCategory.itemStyle.color" @blur="handleColorChange"></a-input>
 					  </a-form-item>
 		          </a-form>
 		</a-modal>
@@ -52,6 +52,27 @@
 				</a-form-item>
 			</a-form>
 		</a-modal>
+		<span>节点大小</span>
+		<a-row>
+		  <a-col :span="12">
+			<a-slider v-model:value="currentSymbolSize" :min="20" :max="70" :disabled="!isEditNode" @blur="handleSymbolSizeChange"/>
+		  </a-col>
+		  <a-col :span="4">
+			<a-input-number v-model:value="currentSymbolSize" :min="20" :max="70" style="marginLeft: 16px" :disabled="!isEditNode" @blur="handleSymbolSizeChange"/>
+		  </a-col>
+		</a-row>
+		<span>是否展示标签</span>
+		<a-switch checked-children="开" un-checked-children="关" v-model:checked="globalIsShowLabel" />
+		<span>标签大小</span>
+		<a-row>
+		  <a-col :span="12">
+			<a-slider v-model:value="globalFontSize" :min="8" :max="30" @blur="globalFontSizeChangeHandler"/>
+		  </a-col>
+		  <a-col :span="4">
+			<a-input-number v-model:value="globalFontSize" :min="8" :max="30" style="marginLeft: 16px" @blur="globalFontSizeChangeHandler"/>
+		  </a-col>
+		</a-row>
+		
 		
 			<div id="category">
 				<span style="display: inline-block;width: 100%;text-align: center;">种类</span><br/>
@@ -69,6 +90,7 @@
 					</a-select-option> -->
 				</a-select>
 				<img src = "imgs/plus_icon.png" @click="addCategoryHandler"/>
+				<!-- <PlusCircleOutlined @click="addCategoryHandler"/> -->
 				<!-- <span>颜色</span> -->
 				<!-- <colorPicker v-model="currentCategory.itemStyle.color" v-on:change="handleColorChange"/> -->
 				<!-- <colorPicker v-model="color_test"></colorPicker> -->
@@ -107,6 +129,7 @@
 <script>
 	import {mapGetters,mapMutations,mapActions} from 'vuex'
 	import {Form} from 'ant-design-vue'
+	import PlusCircleOutlined from '@ant-design/icons-vue'
 	// const EditCategoryNameForm = {
 	// 	props:['editCategoryNameVisible','originalCategory','editCategoryNameForm'],
 	// 	// beforeCreate(){
@@ -120,6 +143,7 @@
 		name:'upperEditBar',
 		components:{
 			// EditCategoryNameForm,
+			PlusCircleOutlined
 		},
 		data(){
 			return{
@@ -147,7 +171,8 @@
 				addCategoryForm:{
 					name:'',
 					color:"",
-				}
+				},
+				// currentSymbolSize:this.currentNeoEntity.symbolSize,
 			}
 		},
 		
@@ -157,11 +182,39 @@
 		    'currentNeoEntity',
 			'currentRelation',
 			'currentCategory'
-		  ])
+		  ]),
+		  currentSymbolSize:{
+			  get(){
+				  return this.$store.state.NeoEntity.currentNeoEntity.symbolSize
+			  },
+			  set(value){
+				  this.$store.commit('set_currentNeoEntitySymbolSize',value)
+				  // this.$store.dispatch('updateNeoEntityByEntity', this.$store.state.NeoEntity.currentNeoEntity)
+			  }
+		  },
+		  globalFontSize:{
+			  get(){
+				  return this.$store.state.NeoEntity.globalFontSize
+			  },
+			  set(value){
+				  this.$store.commit('set_globalFontSize',value)
+			  }
+		  },
+		  globalIsShowLabel:{
+			  get(){
+				  return this.$store.state.NeoEntity.globalIsShowLabel
+			  },
+			  set(value){
+				  this.$store.commit('set_globalIsShowLabel',value)
+				  this.$parent.$parent.draw()
+			  }
+		  },
 		},
 		methods:{
 			...mapMutations([
-				'set_currentCategory'
+				'set_currentCategory',
+				'set_currentNeoEntitySymbolSize',
+				'set_currentNeoEntity'
 			]),
 			...mapActions([
 				'getListAll',
@@ -298,6 +351,13 @@
 			addCategoryFormColorBlurHandler(e){
 				console.log('color blur', e)
 				this.addCategoryForm.color = e.target.value;
+			},
+			handleSymbolSizeChange(e){
+				this.updateNeoEntityByEntity(this.$store.state.NeoEntity.currentNeoEntity)
+				this.$parent.$parent.draw()
+			},
+			globalFontSizeChangeHandler(){
+				this.$parent.$parent.draw()
 			}
 		},
 		created() {

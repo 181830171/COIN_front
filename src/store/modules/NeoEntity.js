@@ -25,7 +25,9 @@ const NeoEntity={
             des:"",
             category:0
         },
-        currentNeoEntity:{},
+        currentNeoEntity:{
+			symbolSize:50,
+		},
 		currentRelation:{
 			id:-1,
 			source:'',
@@ -44,6 +46,8 @@ const NeoEntity={
 				color:'#000000'
 			}
 		},
+		globalFontSize:14,
+		globalIsShowLabel:false,
         addRelateByIdParams:{
             from:0,
             to:0,
@@ -79,10 +83,20 @@ const NeoEntity={
 		set_currentCategory:function(state, data){
 			state.currentCategory = data;
 		},
+		set_globalFontSize:function(state, data){
+			state.globalFontSize = data;
+		},
+		set_globalIsShowLabel:function(state, data){
+			state.globalIsShowLabel = data;
+		},
         //设置历史记录
         set_searchHistories:function(state,data){
             state.searchHistories=data
-        }
+        },
+		// 更新symbolSize
+		set_currentNeoEntitySymbolSize:function(state, data){
+			state.currentNeoEntity.symbolSize = data
+		}
     },
     actions:{
         getListAll: async ({commit})=>{
