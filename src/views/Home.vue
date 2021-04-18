@@ -67,6 +67,9 @@ export default {
       draw1(nodes,links,cate){
 	      this.isSeen=false
           this.searchDisplaySeen=true
+          this.getSearchHistories()
+          console.log("histories1",toRaw(this.$store.state.NeoEntity).searchHistories)
+          this.$refs.nav.searchHistoryList=toRaw(this.$store.state.NeoEntity).searchHistories
 	      console.log("hi")
           var myChart = echarts.init(document.getElementById('searchDisplay'));
           myChart.showLoading();
@@ -157,9 +160,7 @@ export default {
               };
               myChart.setOption(option);
           },3000);
-          this.getSearchHistories()
-          console.log("histories1",toRaw(this.$store.state.NeoEntity).searchHistories)
-          this.$refs.nav.searchHistoryList=toRaw(this.$store.state.NeoEntity).searchHistories
+
       },
     draw(){
       var test=toRaw(this.$store.state.NeoEntity)
@@ -487,6 +488,8 @@ export default {
   mounted() {
     this.getListAll()
     this.draw()
+      this.getSearchHistories()
+      this.$refs.nav.searchHistoryList=toRaw(this.$store.state.NeoEntity).searchHistories
   }
 
 }
