@@ -166,6 +166,9 @@
         top:40px;
         left:0px;
     }
+	#upper_edit_bar{
+		height: 130px;
+	}
 
 
 </style>

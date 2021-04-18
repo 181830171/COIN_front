@@ -132,10 +132,11 @@ const NeoEntity={
 				swal('系统提示','添加关系失败','error')
             }
         },
-        deleteNeoEntityById:async ({state,dispatch},data)=>{
+        deleteNeoEntityById:async ({state,commit,dispatch},data)=>{
             const res=await deleteNeoEntityByIdAPI(data.id);
             if(res){
                 dispatch('getListAll')
+				commit('set_currentNeoEntity',{})
                 swal('系统提示',"成功删除节点",'success')
             }else{
                 swal('系统提示','删除节点失败','error')
@@ -146,6 +147,7 @@ const NeoEntity={
             if(res){
                 dispatch('getListAll')
                 // alert("成功删除关系")
+				commit('set_currentRelation',{})
 				swal('系统提示','删除关系成功','success')
                 console.log("成功删除关系")
             }else{

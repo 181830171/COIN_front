@@ -1,10 +1,14 @@
 <template>
 	<div class="upper">
+		<!-- 节点 -->
 		<div id="node">
-			<a-icon type="edit"></a-icon>
-			<span style="display:inline-block;width:100%; text-align: center;">节点</span><br/>
+			
+			<span style="display:block;width:100%; text-align: left;">
+				节点:{{currentNeoEntity.name==undefined?'':currentNeoEntity.name}}
+				<a-button type="danger" @click="deleteNodeHandler" :disabled="!isEditNode">删除</a-button>
+			</span>
 			<div id="entity_shape">
-				<span>形状</span>
+				<span>形状:&nbsp;</span>
 			  <a-select  :default-value="currentNeoEntity.symbol==undefined?'circle':currentNeoEntity.symbol" style="display: inline-block;" :disabled="!isEditNode" @change="handleShapeChange">
 					<template v-for="(entity_shape, index) in entity_shapes" :key="index">
 						<a-select-option :value="entity_shape[1]">
@@ -13,6 +17,90 @@
 					</template>			
 			  </a-select>
 			</div>
+			<div id="entity_category">
+							<span>种类:&nbsp;</span>
+							<a-select ref="category_select" :default-value="currentCategory.name" style="display: inline-block; width: 120px;" :disabled="!isEditNode" @change="handleCategoryChange">
+								<template v-for="(category, index) in allEntitiesAndRelations.categories" :key="category.name">
+									<a-select-option :value="category.name">
+										{{category.name}}&nbsp;&nbsp;
+			<!-- 							<a-icon type="edit" @click="editCategoryNameHandler($event, category)"/> -->
+										<img src="imgs/edit_icon.png" style="width: 15%; height: 100%; float: right;" @click="editCategoryNameHandler($event,category)"/>
+									</a-select-option>
+								</template>
+			<!-- 					<a-select-option value="添加种类" @click="addCategoryHandler">
+									添加种类
+								</a-select-option> -->
+							</a-select>
+							<img src = "imgs/plus_icon.png" @click="addCategoryHandler" style="width: 30px; height: 30px;"/>
+							<!-- <PlusCircleOutlined @click="addCategoryHandler"/> -->
+							<!-- <span>颜色</span> -->
+							<!-- <colorPicker v-model="currentCategory.itemStyle.color" v-on:change="handleColorChange"/> -->
+							<!-- <colorPicker v-model="color_test"></colorPicker> -->
+				<!-- 			<vue-color-picker-board :width="800"
+													:height="100"
+													:defaultColor="'#00AAFF'"
+													@onSelection="handleColorChange">
+							</vue-color-picker-board> -->
+							 
+			</div>
+			<div id="entity_size">
+				<span>大小:&nbsp;</span>
+				<a-row>
+				  <a-col :span="12">
+					<a-slider v-model:value="currentSymbolSize" :min="20" :max="70" :disabled="!isEditNode" @blur="handleSymbolSizeChange"/>
+				  </a-col>
+				  <a-col :span="4">
+					<a-input-number v-model:value="currentSymbolSize" :min="20" :max="70" style="marginLeft: 16px" :disabled="!isEditNode" @blur="handleSymbolSizeChange"/>
+				  </a-col>
+				</a-row>
+			</div>
+		</div>
+		
+		<!-- 关系 -->
+		<div id="upper_edit_relation">
+			<span style="display:block;width:100%; text-align: left;">
+				关系:{{currentRelation.name==undefined?'':currentRelation.name}}
+				<a-button type="danger" @click="deleteRelationHandler" :disabled="!isEditRel">删除</a-button>
+			</span>
+			<div id="upper_edit_relation_startnode">
+				<span>起点:</span>
+				<a-select :value="currentRelation.symbol[0]" style="display: inline-block;" :disabled="!isEditRel" @change="handleStartNodeEdgeChange">
+								<template v-for="(edge_style, index) in edge_styles" :key="index">
+									<a-select-option :value="edge_style[0]">
+										{{edge_style[0]}}
+									</a-select-option>	
+							  </template>
+				</a-select>
+			</div>
+			<div id="upper_edit_relation_endnode">
+				<span>终点:</span>
+				<a-select :value="currentRelation.symbol[1]" style="display: inline-block;" :disabled="!isEditRel" @change="handleEndNodeEdgeChange">
+								<template v-for="(edge_style, index) in edge_styles" :key="index">
+									<a-select-option :value="edge_style[0]">
+										{{edge_style[0]}}
+									</a-select-option>	
+							  </template>
+				</a-select>
+			</div>
+		</div>
+		
+		<div id="upper_edit_label">
+			<span style="display:block;width:100%; text-align: left; margin-bottom: 2px;">
+				<span>标签</span>
+				<a-switch checked-children="显示" un-checked-children="隐藏" v-model:checked="globalIsShowLabel" />
+			</span>
+			<div id="upper_edit_label_size">
+				<span>标签大小:</span>
+				<a-row>
+				  <a-col :span="12">
+					<a-slider v-model:value="globalFontSize" :min="8" :max="30" @blur="globalFontSizeChangeHandler"/>
+				  </a-col>
+				  <a-col :span="4">
+					<a-input-number v-model:value="globalFontSize" :min="8" :max="30" style="marginLeft: 16px" @blur="globalFontSizeChangeHandler"/>
+				  </a-col>
+				</a-row>
+			</div>
+		</div>
 <!-- <a-icon type="plus-square" /> -->
 		<a-modal
 		              :visible="editCategoryNameVisible"
@@ -52,77 +140,6 @@
 				</a-form-item>
 			</a-form>
 		</a-modal>
-		<span>节点大小</span>
-		<a-row>
-		  <a-col :span="12">
-			<a-slider v-model:value="currentSymbolSize" :min="20" :max="70" :disabled="!isEditNode" @blur="handleSymbolSizeChange"/>
-		  </a-col>
-		  <a-col :span="4">
-			<a-input-number v-model:value="currentSymbolSize" :min="20" :max="70" style="marginLeft: 16px" :disabled="!isEditNode" @blur="handleSymbolSizeChange"/>
-		  </a-col>
-		</a-row>
-		<span>是否展示标签</span>
-		<a-switch checked-children="开" un-checked-children="关" v-model:checked="globalIsShowLabel" />
-		<span>标签大小</span>
-		<a-row>
-		  <a-col :span="12">
-			<a-slider v-model:value="globalFontSize" :min="8" :max="30" @blur="globalFontSizeChangeHandler"/>
-		  </a-col>
-		  <a-col :span="4">
-			<a-input-number v-model:value="globalFontSize" :min="8" :max="30" style="marginLeft: 16px" @blur="globalFontSizeChangeHandler"/>
-		  </a-col>
-		</a-row>
-		
-		
-			<div id="category">
-				<span style="display: inline-block;width: 100%;text-align: center;">种类</span><br/>
-				<span>名称</span>
-				<a-select ref="category_select" :default-value="currentCategory.name" style="display: inline-block; width: 120px;" :disabled="!isEditNode" @change="handleCategoryChange">
-					<template v-for="(category, index) in allEntitiesAndRelations.categories" :key="category.name">
-						<a-select-option :value="category.name">
-							{{category.name}}&nbsp;&nbsp;
-<!-- 							<a-icon type="edit" @click="editCategoryNameHandler($event, category)"/> -->
-							<img src="imgs/edit_icon.png" style="width: 15%; height: 100%; float: right;" @click="editCategoryNameHandler($event,category)"/>
-						</a-select-option>
-					</template>
-<!-- 					<a-select-option value="添加种类" @click="addCategoryHandler">
-						添加种类
-					</a-select-option> -->
-				</a-select>
-				<img src = "imgs/plus_icon.png" @click="addCategoryHandler"/>
-				<!-- <PlusCircleOutlined @click="addCategoryHandler"/> -->
-				<!-- <span>颜色</span> -->
-				<!-- <colorPicker v-model="currentCategory.itemStyle.color" v-on:change="handleColorChange"/> -->
-				<!-- <colorPicker v-model="color_test"></colorPicker> -->
-	<!-- 			<vue-color-picker-board :width="800"
-										:height="100"
-										:defaultColor="'#00AAFF'"
-										@onSelection="handleColorChange">
-				</vue-color-picker-board> -->
-				 
-				</div>
-			</div>
-			<div id="relation" style="width: 50%; float: left;">
-			<span>关系</span><br />
-
-			<span>起点:</span>
-				<a-select :value="currentRelation.symbol[0]" style="display: inline-block;" :disabled="!isEditRel" @change="handleStartNodeEdgeChange">
-								<template v-for="(edge_style, index) in edge_styles" :key="index">
-									<a-select-option :value="edge_style[0]">
-										{{edge_style[0]}}
-									</a-select-option>	
-							  </template>
-				</a-select>
-				
-				<span>终点:</span>
-				<a-select :value="currentRelation.symbol[1]" style="display: inline-block;" :disabled="!isEditRel" @change="handleEndNodeEdgeChange">
-								<template v-for="(edge_style, index) in edge_styles" :key="index">
-									<a-select-option :value="edge_style[0]">
-										{{edge_style[0]}}
-									</a-select-option>	
-							  </template>
-				</a-select>
-			</div>
 	</div>
 </template>
 
@@ -223,6 +240,8 @@
 				'updateNeoEntityByEntity',
 				'updateRelSymbol',
 				'updateNeoEntityByCategory',
+				'deleteNeoEntityById',
+				'deleteRelateById'
 			]),
 			handleShapeChange(e){
 				console.log('click shape change', e);
@@ -358,6 +377,56 @@
 			},
 			globalFontSizeChangeHandler(){
 				this.$parent.$parent.draw()
+			},
+			
+			//删除节点
+			deleteNodeHandler(){
+				var _this = this
+				swal("确定删除吗",{
+					  buttons: {
+						cancel: '我再想想',
+						delete: {
+						  text: "确认删除",
+						  value: "delete",
+						}
+					  },
+				}).then((value)=>{
+					switch(value){
+						case 'delete':
+							_this.deleteNeoEntityById({
+								id:_this.currentNeoEntity.nodeId
+							});
+							_this.isEditNode = false;
+							_this.$parent.$parent.draw();
+							break;
+						case 'cancel':
+							break;
+					}
+				});
+			},
+			
+			// 删除关系
+			deleteRelationHandler(){
+				var _this = this
+				swal("确定删除吗",{
+					  buttons: {
+						cancel: '我再想想',
+						delete: {
+						  text: "确认删除",
+						  value: "delete",
+						}
+					  },
+				}).then((value)=>{
+					switch(value){
+						case 'delete':
+							_this.deleteRelateById(_this.currentRelation.id);
+							_this.isEditRel = false;
+							_this.$parent.$parent.draw();
+							break;
+						case 'cancel':
+							break;
+					}
+				});
 			}
 		},
 		created() {
@@ -367,18 +436,71 @@
 </script>
 
 <style scoped>
+.upper{
+	width: 100%;
+	height: 100%;
+}
 #node{
-	 width: 50%;
+	 width: 40%;
 	 float: left;
-	 font-size: 100%;
+	 font-size: 50%;
+	 height: 100%;
+	 border-right: 1px solid #008080;
 }
 #entity_shape{
 	width: 35%;
+	/* height: 35px; */
+	margin-top: 2px;
+	margin-bottom: 2px;
 	float: left;
 }
-#category{
-	width: 65%;
+#entity_category{
+	width: 60%;
+	margin-top: 2px;
+	margin-bottom: 2px;
+	/* height: 35px; */
+	margin-left: 5px;
 	float: left;
+}
+#entity_size{
+	width: 100%;
+	float: left;
+	margin-top: 2px;
+	/* font-size: 50%; */
+}
+
+#upper_edit_relation{
 	font-size: 50%;
+	width: 25%;
+	height: 100%;
+	float: left;
+	border-right: 1px solid #008080;
+	margin-left: 5px;
+}
+#upper_edit_relation_startnode{
+	width: 40%;
+	float: left;
+	margin-top: 2px;
+	margin-bottom: 2px;
+}
+#upper_edit_relation_endnode{
+	width: 40%;
+	float: left;
+	margin-left: 10px;
+	margin-top: 2px;
+	margin-bottom: 2px;
+}
+
+#upper_edit_label{
+	width: 25%;
+	float:left;
+	height: 100%;
+	font-size: 50%;
+	margin-left: 5px;
+}
+
+#upper_edit_label_size{
+	width: 100%;
+	margin-top: 2px;
 }
 </style>
