@@ -11,7 +11,9 @@ import{
 	updateCategoryAPI,
 	updateRelSymbolAPI,
     searchNodesAPI,
-    getSearchHistoriesAPI
+    getSearchHistoriesAPI,
+    loginAPI,
+    registerAPI
 }from '../../api/NeoEntity.js'
 const NeoEntity={
     state:{
@@ -48,8 +50,8 @@ const NeoEntity={
 		},
 		globalNodeFontSize:14,
 		globalRelFontSize:14,
-		globalIsShowNodeLabel:false,
-		globalIsShowRelLabel:false,
+		globalIsShowNodeLabel:true,
+		globalIsShowRelLabel:true,
         addRelateByIdParams:{
             from:0,
             to:0,
@@ -289,6 +291,27 @@ const NeoEntity={
                 commit("set_searchHistories",res)
             }else{
                 swal('系统提示','错误','error')
+            }
+        },
+
+        //登录
+        login:async({},data)=>{
+            const res=await loginAPI(data)
+            console.log(res)
+            if(res){
+                swal('欢迎','登录成功','success')
+            }else{
+                swal('登录失败','请检查密码是否正确','error')
+            }
+            return res
+        },
+        //注册
+        register:async({},data)=>{
+            const res=await registerAPI(data)
+            if(res){
+                swal('欢迎','注册成功','success')
+            }else{
+                swal('失败','用户名重复','error')
             }
         }
     }

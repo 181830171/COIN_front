@@ -130,5 +130,22 @@ export function getSearchHistoriesAPI(){
     })
 }
 
+//登录
+export function loginAPI(data){
+    return axios({
+        url:`/login`,
+        method:'POST',
+        data
+    })
+}
+//注册
+export function registerAPI(data){
+    return axios({
+        url:`/register`,
+        method:'POST',
+        data
+    })
+}
+
 
 
