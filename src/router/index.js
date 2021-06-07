@@ -5,7 +5,12 @@ import login from '../components/login'
 const routes = [
   {
     path:'',
-    redirect:"/login"
+    redirect:"/home"
+  },
+  {
+    path: '/login',
+    component:login,
+    meta:{requireAuth: false}
   },
   {
     path: '/home',
@@ -13,11 +18,6 @@ const routes = [
     component: Home,
     meta:{requireAuth:true}
   },
-  {
-    path: '/login',
-    component:login,
-    meta:{requireAuth: false}
-  }
 ]
 
 
@@ -25,11 +25,13 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes
 })
+
 router.beforeEach((to,from,next)=>{
   let islogin=localStorage.getItem("islogin")
   console.log(islogin)
   console.log(to.path)
   islogin=Boolean(Number(islogin))
+  console.log("this is where it from",from.path)
   if(to.path=='/login'){
     localStorage.setItem("islogin",0)
     next()

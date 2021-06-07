@@ -2,7 +2,7 @@
 	<div>
   <navigator ref="nav"/>
 <!--  <sidebar/>-->
-
+<!--        <chatBox></chatBox>-->
   <div >
 
     <div class="w3-container " id="main" ref="main" @click="windowopen()" v-show="isSeen">
@@ -24,7 +24,7 @@ import sidebar from "../components/sidebar";
 import navigator from "../components/navigator";
 import {toRaw} from "@vue/reactivity";
 import upperEditBar from "../components/upperEditBar";
-
+import chatBox from "../components/chatBox";
 
 export default {
   name: 'Home',
@@ -32,7 +32,8 @@ export default {
     Navigator,
     //HelloWorld
     sidebar,navigator,
-	upperEditBar
+	upperEditBar,
+    chatBox
   },
   data(){
     return {openwindow:true,searchResult:[],isSeen:true,searchDisplaySeen:false,myChart:{}}
@@ -478,6 +479,11 @@ export default {
     }
   },
   created() {
+      if(this.$router.path!=='/home'){
+          console.log('hihiihihi')
+          localStorage.setItem('islogin',1)
+          this.$router.replace('/home')
+      }
       this.getListAll()
       this.getSearchHistories()
       const _this=this
@@ -492,6 +498,7 @@ export default {
     this.draw()
       this.getSearchHistories()
       this.$refs.nav.searchHistoryList=toRaw(this.$store.state.NeoEntity).searchHistories
+      localStorage.setItem('islogin',1)
   }
 
 }
