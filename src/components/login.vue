@@ -7,8 +7,8 @@
             <span class="span-title">COIN登入</span>
             <a-input id="name" class="inputbar" placeholder="请输入用户名"/>
             <a-input-password id="password" class="inputbar" placeholder="请输入密码"/>
-            <button @click="handleLogin">登录</button>
-            <button @click="registerFormVisible=true">注册</button>
+            <button class='loginbutton' @click="handleLogin">登录</button>
+            <button class='loginbutton' @click="registerFormVisible=true">注册</button>
             <router-view></router-view>
         </div>
         <a-modal
@@ -110,7 +110,7 @@
         position: relative;
         left: 25%;
     }
-    button{
+    .loginbutton{
         font-size: 20px;
         width: 100%;
         margin:5px;

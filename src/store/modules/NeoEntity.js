@@ -130,7 +130,7 @@ const NeoEntity={
             }
         },
         addRelateById: async ({state,commit,dispatch},data)=>{
-            const res=await addRelateByIdAPI(data.from,data.to,data.isSolid,data.des,data.name)
+            const res=await addRelateByIdAPI(data.from,data.to,data.isSolid,data.des,data.name,data.symbol)
             if(res){
                 dispatch('getListAll')
                 // console.log("成功")

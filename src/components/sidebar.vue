@@ -91,7 +91,14 @@
               const data={
                   name:this.name,
                   des:this.des,
-                  category:this.cate
+                  category:this.cate,
+                  // symbolSize: this.symbolSize,
+                  // x: this.x,
+                  // y: this.y,
+                  symbol:'circle',
+                  symbolSize:50,
+                  x:50,
+                  y:50
               }
               this.addNeoEntity(data)
               this.$parent.$parent.draw()
@@ -105,7 +112,8 @@
                     to:this.destin,
                     isSolid:this.isSolid,
                     des:"",
-                    name:this.relation
+                    name:this.relation,
+                    symbol:["circle","circle"]
                 }
                 console.log(data)
                 this.addRelateById(data)

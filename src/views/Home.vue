@@ -2,8 +2,8 @@
 	<div>
   <navigator ref="nav"/>
 <!--  <sidebar/>-->
-<!--        <chatBox></chatBox>-->
-  <div >
+
+  <div>
 
     <div class="w3-container " id="main" ref="main" @click="windowopen()" v-show="isSeen">
     </div>
@@ -11,6 +11,7 @@
       </div>
       <search-result :searchDisplaySeen="searchDisplaySeen" ref="search"></search-result>
     </div>
+      <chatBox></chatBox>
 	</div>
 </template>
 
@@ -18,7 +19,6 @@
 // @ is an alias to /src
 
 import {mapActions, mapGetters, mapMutations,mapState} from "vuex";
-import windowmodual from "../components/windowModual";
 let echarts=require('echarts')
 import sidebar from "../components/sidebar";
 import navigator from "../components/navigator";
