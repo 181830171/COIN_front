@@ -59,7 +59,7 @@
                 this.$router.push('/home')
             },
             edit() {
-                // this.isEditSeen = true;
+                this.isEditSeen = true;
                 this.isAddSeen = false;
             },
             export2JSON() {

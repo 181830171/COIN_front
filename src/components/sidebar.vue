@@ -7,7 +7,7 @@
         <p class="w3-bar-item w3-button hover-none">总节点数：{{allEntitiesAndRelations.nodes.length}}</p>
         <p class="w3-bar-item w3-button hover-none">总连接数：{{allEntitiesAndRelations.links.length}}</p>
     </div>
-    <div id="addSomething" class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width: 18%;font-size: 22px" v-show="seen">
+    <div id="addSomething" class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width: 18%;font-size: 22px;color: black" v-show="seen">
         <p class="w3-bar-item w3-button w3-xlarge" @Click="close()">←</p>
         <a class="w3-bar-item w3-button " @click="addEntity()">添加实体</a>
         <a class="w3-bar-item w3-button " @click="addRelation()">添加关系</a>
@@ -66,7 +66,7 @@
                 relation:"",
                 isSolid:true,
                 isaddEntity:false,
-                isaddRelation:false
+                isaddRelation:false,
             }
         },
       computed: {
@@ -137,7 +137,7 @@
 </script>
 
 <style scoped>
-    @import '../assets/main.css';
+    @import '../assets/bar.css';
     .w3-sidebar{
 		/* margin-top: 11%; */
         font-size: 16px;
