@@ -56,6 +56,7 @@
             add() {
                 this.isAddSeen = true;
                 this.isEditSeen = false;
+                this.$router.push('/home')
             },
             edit() {
                 // this.isEditSeen = true;
@@ -112,7 +113,8 @@
         mounted(){
             this.getSearchHistories()
             this.searchHistoryList=toRaw(this.$store.state.NeoEntity).searchHistories
-        }
+        },
+
     }
 </script>
 
