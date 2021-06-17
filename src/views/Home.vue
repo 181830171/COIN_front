@@ -245,7 +245,7 @@ export default {
                 textStyle: {
                   fontSize: _this.globalRelFontSize
                 },
-				
+
                 show: _this.globalIsShowRelLabel,
                 formatter: function (x) {
                   return x.data.name;
@@ -287,8 +287,11 @@ export default {
           }],
 
         };
-        window.onresize=function(){console.log("resize,window")
-        myChart.resize()}
+        window.onresize=function(){
+          console.log("resize,window")
+          myChart.resize()
+        }
+        console.log("hahaha",option.series[0].data)
         myChart.setOption(option);
         myChart.on('restore',function () {
             setNode()
@@ -340,7 +343,7 @@ export default {
 				name:category.name,
 				itemStyle:category.itemStyle,
 			});
-			
+
 			// 更新upper_edit_side
 			_this.$refs.nav.$refs.upper_edit_side.isEditNode = true;
 			_this.$refs.nav.$refs.upper_edit_side.isEditRel = false;
@@ -363,12 +366,12 @@ export default {
             console.log(params.data.name);
             console.log(params.data.id);
             console.log(params);
-			
+
 			_this.$refs.nav.$refs.upper_edit_side.isEditNode = false;
 			_this.$refs.nav.$refs.upper_edit_side.isEditRel = true;
 			console.log('you click an edge', params);
 			console.log('category', _this.currentCategory)
-			
+
           }else{
 			  _this.$refs.nav.$refs.upper_edit_side.isEditNode = false;
 			  _this.$refs.nav.$refs.upper_edit_side.isEditRel = false;
@@ -382,7 +385,7 @@ export default {
 		myChart.getZr().on('mousewheel', function () {
 			updatePosition()
 		} )
-		
+
       //一开始就是拖动模式的话需要调用initNode()
       function initNode(){
         //该方法用于初始化覆盖在节点上的透明的圆，以便于拖动操作
