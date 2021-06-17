@@ -96,6 +96,7 @@
 </script>
 
 <style scoped>
+    @import "../assets/bar.css";
     .w3-sidebar{
         height: 800px;
         padding:3px 16px;

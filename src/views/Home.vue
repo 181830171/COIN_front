@@ -2,8 +2,8 @@
 	<div>
   <navigator ref="nav"/>
 <!--  <sidebar/>-->
-<!--        <chatBox></chatBox>-->
-  <div >
+
+  <div>
 
     <div class="w3-container " id="main" ref="main" @click="windowopen()" v-show="isSeen">
     </div>
@@ -11,6 +11,7 @@
       </div>
       <search-result :searchDisplaySeen="searchDisplaySeen" ref="search"></search-result>
     </div>
+      <chatBox></chatBox>
 	</div>
 </template>
 
@@ -18,7 +19,6 @@
 // @ is an alias to /src
 
 import {mapActions, mapGetters, mapMutations,mapState} from "vuex";
-import windowmodual from "../components/windowModual";
 let echarts=require('echarts')
 import sidebar from "../components/sidebar";
 import navigator from "../components/navigator";
@@ -348,6 +348,7 @@ export default {
 			// 更新upper_edit_side
 			_this.$refs.nav.$refs.upper_edit_side.isEditNode = true;
 			_this.$refs.nav.$refs.upper_edit_side.isEditRel = false;
+			_this.$refs.nav.edit()
 			console.log('you click a node', params);
           }else if(params.dataType=='edge'){
             //单击关系的事件
@@ -483,7 +484,6 @@ export default {
   },
   created() {
       if(this.$router.path!=='/home'){
-          console.log('hihiihihi')
           localStorage.setItem('islogin',1)
           this.$router.replace('/home')
       }
@@ -510,7 +510,7 @@ export default {
 
 </script>
 <style scoped>
-  @import "../assets/main.css";
+  @import "../assets/bar.css";
   #main{
       margin-left: 18%;
       width: 80%;
