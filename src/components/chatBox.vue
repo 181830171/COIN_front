@@ -183,6 +183,8 @@
             this.d=document;
             this.openBody();
             this.closeChat();
+
+
             this.chatHint=$('#chatHint')
             this.chat_main=this.d.querySelector('.chat-main');
             this.chatInput = this.d.querySelector('#chat_input'),
