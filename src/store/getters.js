@@ -12,5 +12,6 @@ const getters={
 	globalRelFontSize:state=>state.NeoEntity.globalRelFontSize,
 	globalIsShowNodeLabel:state=>state.NeoEntity.globalIsShowNodeLabel,
 	globalIsShowRelLabel:state=>state.NeoEntity.globalIsShowRelLabel,
+    questionAnswer:state=>state.NeoEntity.questionAnswer
 }
 export default getters

@@ -13,7 +13,8 @@ import{
     searchNodesAPI,
     getSearchHistoriesAPI,
     loginAPI,
-    registerAPI
+    registerAPI,
+    getAnswerAPI
 }from '../../api/NeoEntity.js'
 const NeoEntity={
     state:{
@@ -60,7 +61,8 @@ const NeoEntity={
             name:""
         },
         searchResult:[],
-        searchHistories:[]
+        searchHistories:[],
+        questionAnswer:""
     },
     mutations:{
         set_addNeoEntityParams:function(state,data){
@@ -106,7 +108,11 @@ const NeoEntity={
 		// 更新symbolSize
 		set_currentNeoEntitySymbolSize:function(state, data){
 			state.currentNeoEntity.symbolSize = data
-		}
+		},
+		//问题回答
+        set_questionAnswer:function(state,data){
+            state.questionAnswer=data;
+        }
     },
     actions:{
         getListAll: async ({commit})=>{
@@ -313,6 +319,17 @@ const NeoEntity={
             }else{
                 swal('失败','用户名重复','error')
             }
+        },
+        //智能问答
+        getAnswer:async({commit},question)=>{
+            const res=await getAnswerAPI(question)
+            if(res){
+                console.log(res)
+            }else{
+                console.log("回答不出来")
+                console.log(res.content)
+            }
+            return res
         }
     }
 }
