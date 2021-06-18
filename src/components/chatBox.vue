@@ -164,15 +164,20 @@
                         var tempAnswer=resdata.split("*")
                         var i;
                         var answer=[]
-                        for(i=1;i<tempAnswer.length;i++){
-                            if(i!=1){
+                        for(i=0;i<tempAnswer.length;i++){
+                            if(i!=0){
                                 var splitTempAnswer=tempAnswer[i].split("：")
                                 if(splitTempAnswer[1]!=""){
                                     // _this.createInfo('service',tempAnswer[i])
                                     answer.push(tempAnswer[i])
                                 }
                             }else{
-                                answer.push(tempAnswer[1])
+                                if(tempAnswer[0]!==""){
+                                    answer.push(tempAnswer[0])
+                                }else{
+
+                                }
+
                             }
                         }
                         if(answer.length==1){
