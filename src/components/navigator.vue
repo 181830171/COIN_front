@@ -20,7 +20,7 @@
 	<div id="upper_edit_bar" class="w3-container w3-sand">
 		<upper-edit-bar ref="upper_edit_side"></upper-edit-bar>
 	</div>
-    <sidebar id="side" :seen="isAddSeen" ref="sidebar"/>
+    <sidebar id="side" :seen="isAddSeen" ref="sidebar" style="position: fixed;-webkit-overflow-scrolling:touch"/>
     <editbar ref="editside" :seen="isEditSeen" />
 	</div>
 </template>
@@ -28,8 +28,7 @@
 <script>
     import sidebar from "./sidebar";
     import Editbar from "./editbar";
-    import {Input,Space} from 'ant-design-vue'
-    import {AudioOutLined} from '@ant-design/icons-vue'
+    import $ from "jquery";
     import {mapActions,mapGetters} from 'vuex';
     import {toRaw} from "@vue/reactivity";
 	import upperEditBar from "./upperEditBar.vue";
@@ -110,12 +109,25 @@
                 }
             }
         },
-        mounted(){
+        mounted() {
             this.getSearchHistories()
-            this.searchHistoryList=toRaw(this.$store.state.NeoEntity).searchHistories
-        },
-
+            this.searchHistoryList = toRaw(this.$store.state.NeoEntity).searchHistories
+            // $(function () {
+            //     var ie6 = document.all;
+            //     var dv = $('div'), st;
+            //     dv.attr('otop', dv.offset().top); //存储原来的距离顶部的距离
+            //     $(window).scroll(function () {
+            //         st = Math.max(document.body.scrollTop || document.documentElement.scrollTop);
+            //         if (st > parseInt(dv.attr('otop'))) {
+            //             if (ie6) {//IE6不支持fixed属性，所以只能靠设置position为absolute和top实现此效果
+            //                 dv.css({position: 'absolute', top: st});
+            //             } else if (dv.css('position') != 'fixed') dv.css({'position': 'fixed', top: 0});
+            //         } else if (dv.css('position') != 'static') dv.css({'position': 'static'});
+            //     });
+            // });
+        }
     }
+
 </script>
 
 <style scoped>
