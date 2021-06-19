@@ -31,6 +31,7 @@
 
 <script>
     import $ from 'jquery'
+    import {mapActions,mapGetters} from "vuex"
     export default {
         name: "chatBox",
         data(){
@@ -53,6 +54,12 @@
             }
         },
         methods:{
+            ...mapGetters([
+                "questionAnswer"
+            ]),
+            ...mapActions([
+                "getAnswer"
+            ]),
             openBody(){
                 $('.chat-support-btn').css({'display': 'none'});
                 $('.chat-main').css({'display': 'inline-block', 'height': '0'});
@@ -147,18 +154,42 @@
                 }
             },
             submityouText(text) {
+                console.log("我的问题是",text)
+                const _this=this
+                this.createInfo('service',"好的，请稍等")
+                const answer=this.getAnswer(text).then(resdata=>{
+                    if(resdata==""){
+                        _this.createInfo('service',"抱歉，这个问题我不知道")
+                    }else {
+                        var tempAnswer=resdata.split("*")
+                        var i;
+                        var answer=[]
+                        for(i=0;i<tempAnswer.length;i++){
+                            if(i!=0){
+                                var splitTempAnswer=tempAnswer[i].split("：")
+                                if(splitTempAnswer[1]!=""){
+                                    // _this.createInfo('service',tempAnswer[i])
+                                    answer.push(tempAnswer[i])
+                                }
+                            }else{
+                                if(tempAnswer[0]!==""){
+                                    answer.push(tempAnswer[0])
+                                }else{
 
-                // 模拟后端回复
-                var num = Math.random() * 10;
-                if (num <= 7) {
-                    //因为这里可能大于7所以没有回复
-                    this.getServiceText(this.serviceData);
-                }
-            },
-            getServiceText(data) {/*已定义后台消息框*/
-                var serviceText = data.robot.chat,
-                    i = Math.floor(Math.random() * serviceText.length);
-                this.createInfo('service',serviceText[i]);
+                                }
+
+                            }
+                        }
+                        if(answer.length==1){
+                            _this.createInfo('service', "抱歉没能找到相关信息")
+                        }else{
+                            for ( var item of answer){
+                                _this.createInfo('service',item)
+                            }
+                        }
+
+                    }
+                })
             },
             handleEmptyEnter(event){
                 if(event.keyCode==13){

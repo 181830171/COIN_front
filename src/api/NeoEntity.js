@@ -151,6 +151,14 @@ export function registerAPI(data){
         data
     })
 }
+//智能问答
+export function getAnswerAPI(question){
+    return axios({
+        url:`/getAnswer`,
+        method:'POST',
+        params:{question:question}
+    })
+}
 
 
 
