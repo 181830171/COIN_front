@@ -180,7 +180,8 @@
 
                             }
                         }
-                        if(answer.length==1){
+                        console.log("我的回答是",answer)
+                        if(answer.length==0){
                             _this.createInfo('service', "抱歉没能找到相关信息")
                         }else{
                             for ( var item of answer){
