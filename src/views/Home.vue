@@ -358,9 +358,9 @@ export default {
         if(layout=="force"){
           myChart.setOption({
             series:[{
-              layout:'none',
+              layout:'circular',
               zoom:1,
-              data:toRaw(_this.$store.state.NeoEntity).allEntitiesAndRelations.nodes
+              // data:toRaw(_this.$store.state.NeoEntity).allEntitiesAndRelations.nodes
             }]
           })
           initNode()
