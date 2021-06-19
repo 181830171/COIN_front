@@ -167,7 +167,7 @@
                         for(i=0;i<tempAnswer.length;i++){
                             if(i!=0){
                                 var splitTempAnswer=tempAnswer[i].split("：")
-                                if(splitTempAnswer[1]!=""){
+                                if(splitTempAnswer[1]!="\n"){
                                     // _this.createInfo('service',tempAnswer[i])
                                     answer.push(tempAnswer[i])
                                 }
