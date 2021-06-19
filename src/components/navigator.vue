@@ -93,6 +93,7 @@
 					setTimeout(function(){
 						_this.getSearchHistories()
 					},1000)
+                    swal("系统提示","搜索需要花费5s左右的时间，请耐心等待","warning")
                     setTimeout(function () {
                         console.log("histories",toRaw(_this.$store.state.NeoEntity).searchHistories)
                         _this.searchResult=toRaw(_this.$store.state.NeoEntity).searchResult
@@ -104,7 +105,7 @@
                         }else{
                             console.log("this")
                         }
-                    }, 2000)
+                    }, 5000)
 
                 }
             }
