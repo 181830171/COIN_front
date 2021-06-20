@@ -355,10 +355,10 @@ export default {
       }
       function changeType(){
         var layout=myChart.getOption().series[0].layout
-        if(layout=="force"){
+        if(layout=="circular"){
           myChart.setOption({
             series:[{
-              layout:'circular',
+              layout:'none',
               zoom:1,
               // data:toRaw(_this.$store.state.NeoEntity).allEntitiesAndRelations.nodes
             }]
@@ -367,8 +367,8 @@ export default {
         }else{
           myChart.setOption({
             series:[{
-              layout:'force',
-              zoom:0.5,
+              layout:'circular',
+              zoom:1,
             }],
             graphic:[],
           })
