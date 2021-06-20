@@ -288,6 +288,7 @@ const NeoEntity={
                 commit('set_searchResult',[])
                 swal('系统提示','未找到相关节点','error')
             }
+            return res
         },
         //获得搜索历史记录
         getSearchHistories:async({state,commit})=>{

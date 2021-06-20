@@ -87,25 +87,22 @@
                     alert("请输入搜索内容")
                 } else {
 
-                    this.searchNodes(this.searchText);
+                    const result=this.searchNodes(this.searchText);
                     this.searchText = ""
 
 					setTimeout(function(){
 						_this.getSearchHistories()
 					},1000)
-                    swal("系统提示","搜索需要花费5s左右的时间，请耐心等待","warning")
+                    swal("系统提示","搜索需要花费3s左右的时间，请耐心等待","warning")
                     setTimeout(function () {
-                        console.log("histories",toRaw(_this.$store.state.NeoEntity).searchHistories)
-                        _this.searchResult=toRaw(_this.$store.state.NeoEntity).searchResult
-                        _this.searchHistoryList=toRaw(_this.$store.state.NeoEntity).searchHistories
-                        if(toRaw(_this.searchResult).length!=0){
-                            _this.$parent.isSeen=false
-                            _this.$parent.searchDisplaySeen=true
-                            _this.$parent.draw1(toRaw(_this.$store.state.NeoEntity).searchResult,toRaw(_this.$store.state.NeoEntity).allEntitiesAndRelations.links,toRaw(_this.$store.state.NeoEntity).allEntitiesAndRelations.categories)
-                        }else{
-                            console.log("this")
-                        }
-                    }, 5000)
+                        result.then(resdata=>{
+                            if(resdata.length!=0){
+                                _this.$parent.isSeen=false
+                                _this.$parent.searchDisplaySeen=true
+                                _this.$parent.draw1(resdata,toRaw(_this.$store.state.NeoEntity).allEntitiesAndRelations.links,toRaw(_this.$store.state.NeoEntity).allEntitiesAndRelations.categories)
+                            }
+                        })
+                    }, 3000)
 
                 }
             }
@@ -113,19 +110,6 @@
         mounted() {
             this.getSearchHistories()
             this.searchHistoryList = toRaw(this.$store.state.NeoEntity).searchHistories
-            // $(function () {
-            //     var ie6 = document.all;
-            //     var dv = $('div'), st;
-            //     dv.attr('otop', dv.offset().top); //存储原来的距离顶部的距离
-            //     $(window).scroll(function () {
-            //         st = Math.max(document.body.scrollTop || document.documentElement.scrollTop);
-            //         if (st > parseInt(dv.attr('otop'))) {
-            //             if (ie6) {//IE6不支持fixed属性，所以只能靠设置position为absolute和top实现此效果
-            //                 dv.css({position: 'absolute', top: st});
-            //             } else if (dv.css('position') != 'fixed') dv.css({'position': 'fixed', top: 0});
-            //         } else if (dv.css('position') != 'static') dv.css({'position': 'static'});
-            //     });
-            // });
         }
     }
 
