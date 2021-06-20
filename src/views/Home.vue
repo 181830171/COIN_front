@@ -5,11 +5,8 @@
 
   <div>
 
-    <div class="w3-container " id="main" ref="main" @click="windowopen()" v-show="isSeen">
+    <div class="w3-container " id="main" ref="main" @click="windowopen()">
     </div>
-      <div class="w3-container " id="searchDisplay" style="margin-left:18%;width: 1020px;height:700px" v-show="searchDisplaySeen">
-      </div>
-      <search-result :searchDisplaySeen="searchDisplaySeen" ref="search"></search-result>
     </div>
       <chatBox></chatBox>
 	</div>
@@ -19,6 +16,7 @@
 // @ is an alias to /src
 
 import {mapActions, mapGetters, mapMutations,mapState} from "vuex";
+import $ from 'jquery'
 let echarts=require('echarts')
 import sidebar from "../components/sidebar";
 import navigator from "../components/navigator";
@@ -36,7 +34,7 @@ export default {
     chatBox
   },
   data(){
-    return {openwindow:true,searchResult:[],isSeen:true,searchDisplaySeen:false,myChart:{}}
+    return {openwindow:true,searchResult:[],myChart:{}}
   },
 
 
@@ -68,14 +66,13 @@ export default {
       'getSearchHistories'
     ]),
       draw1(nodes,links,cate){
-        this.isSeen=false
-        this.searchDisplaySeen=true
         this.getSearchHistories()
         console.log("histories1",toRaw(this.$store.state.NeoEntity).searchHistories)
         this.$refs.nav.searchHistoryList=toRaw(this.$store.state.NeoEntity).searchHistories
 	    const _this=this
-	      setTimeout(function(){
-              _this.initialdraw(nodes,links,cate,'searchDisplay')
+        echarts.init(document.getElementById('main')).dispose();
+        setTimeout(function(){
+              _this.initialdraw(nodes,links,cate,'main')
           })
       },
     draw(){
@@ -88,6 +85,7 @@ export default {
     },
     initialdraw(nodes,links1,categories,domItem){
       // var test=toRaw(this.$store.state.NeoEntity)
+      // if(nodes.length==1){
       var myChart = echarts.init(document.getElementById(domItem));
       myChart.showLoading();
       const _this=this;
@@ -142,13 +140,14 @@ export default {
             // selectedMode: 'single',
             data: categories.map(function (a) {
               return a.name;
-            })
+            }),
+            x:"center",
           }],
           series: [{
             id:'COIN',
             type: 'graph', // 类型:关系图
-            layout: 'force', //图的布局，类型为力导图
-            //layout:'circular',//环形布局
+            //layout: 'force', //图的布局，类型为力导图
+            layout:'circular',//环形布局
             //layout: 'none',
             symbolSize: 50, // 调整节点的大小
             roam: true, // 是否开启鼠标缩放和平移漫游。默认不开启。如果只想要开启缩放或者平移,可以设置成 'scale' 或者 'move'。设置成 true 为都开启
@@ -156,7 +155,8 @@ export default {
             edgeSymbolSize: [2, 10],
             smooth: false,   //关键点，为true是不支持虚线的，实线就用true
             nodeScaleRatio:0.5,
-            zoom:0.5,
+            zoom:1,
+            // center:['50%','50%'],
             edgeLabel: {
               normal: {
                 textStyle: {
@@ -228,6 +228,7 @@ export default {
           console.log('params:',params)
           if (params.dataType == 'node') {
             //单击节点的事件
+            console.log("真实的坐标是",params.data.x,params.data.y)
             _this.windowopen();
             //将参数传给editbar组件
             //_this.$refs.nav.$refs.editside.categories=category1;
@@ -293,7 +294,6 @@ export default {
             console.log('you clicked something else');
           }
         });
-
       },3000);
 
       // 添加放大缩小事件
@@ -389,6 +389,7 @@ export default {
         }
       }
       //setTimeout(function(){initNode()},1000)
+
     },
     windowopen(){
       //这里可以打开侧边栏，删除或修改具体的点或者关系

@@ -97,8 +97,8 @@
                     setTimeout(function () {
                         result.then(resdata=>{
                             if(resdata.length!=0){
-                                _this.$parent.isSeen=false
-                                _this.$parent.searchDisplaySeen=true
+                                // _this.$parent.isSeen=false
+                                // _this.$parent.searchDisplaySeen=true
                                 _this.$parent.draw1(resdata,toRaw(_this.$store.state.NeoEntity).allEntitiesAndRelations.links,toRaw(_this.$store.state.NeoEntity).allEntitiesAndRelations.categories)
                             }
                         })
