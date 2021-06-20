@@ -495,10 +495,13 @@ export default {
   },
   mounted() {
     this.getListAll()
-    this.draw()
-      this.getSearchHistories()
-      this.$refs.nav.searchHistoryList=toRaw(this.$store.state.NeoEntity).searchHistories
-      localStorage.setItem('islogin',1)
+	var that = this
+	setTimeout(function(){
+		that.draw()
+		  this.getSearchHistories()
+		  this.$refs.nav.searchHistoryList=toRaw(this.$store.state.NeoEntity).searchHistories
+		  localStorage.setItem('islogin',1)
+	},2000)
   }
 
 }
