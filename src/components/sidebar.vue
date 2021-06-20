@@ -1,13 +1,13 @@
-<template>
+e<template>
     <div id="index" class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width: 18%">
         <br>
         <p class="w3-bar-item w3-button hover-none">现在打开的图谱为：</p>
-        <p class="w3-bar-item w3-button hover-none">《红楼梦人物》关系图</p>
+        <p class="w3-bar-item w3-button hover-none">《哈利波特》人物关系图</p>
         <p class="w3-bar-item w3-button hover-none">图谱节点分类数：{{allEntitiesAndRelations.categories.length}}</p>
         <p class="w3-bar-item w3-button hover-none">总节点数：{{allEntitiesAndRelations.nodes.length}}</p>
         <p class="w3-bar-item w3-button hover-none">总连接数：{{allEntitiesAndRelations.links.length}}</p>
     </div>
-    <div id="addSomething" class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width: 18%;font-size: 22px" v-show="seen">
+    <div id="addSomething" class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width: 18%;font-size: 22px;color: black" v-show="seen">
         <p class="w3-bar-item w3-button w3-xlarge" @Click="close()">←</p>
         <a class="w3-bar-item w3-button " @click="addEntity()">添加实体</a>
         <a class="w3-bar-item w3-button " @click="addRelation()">添加关系</a>
@@ -20,7 +20,7 @@
         <input class="w3-bar-item" id="description" type="text" v-model="des">
         <p class="w3-bar-item w3-button hover-none">请选择实体类别</p>
         <select class="w3-bar-item" id="cate" v-model="cate">
-            <option v-for="n in parseInt(allEntitiesAndRelations.categories.length)" :value="n-1" :key="n">类目{{n}}</option>
+            <option v-for="n in parseInt(allEntitiesAndRelations.categories.length)" :value="n-1" :key="n">{{allEntitiesAndRelations.categories[n-1].name}}</option>
         </select>
         <button id="add-new-entity-button" style="text-align: center" @click="addEntityHandler()">添加</button>
     </div>
@@ -66,7 +66,7 @@
                 relation:"",
                 isSolid:true,
                 isaddEntity:false,
-                isaddRelation:false
+                isaddRelation:false,
             }
         },
       computed: {
@@ -91,7 +91,14 @@
               const data={
                   name:this.name,
                   des:this.des,
-                  category:this.cate
+                  category:this.cate,
+                  // symbolSize: this.symbolSize,
+                  // x: this.x,
+                  // y: this.y,
+                  symbol:'circle',
+                  symbolSize:50,
+                  x:50,
+                  y:50
               }
               this.addNeoEntity(data)
               this.$parent.$parent.draw()
@@ -105,7 +112,8 @@
                     to:this.destin,
                     isSolid:this.isSolid,
                     des:"",
-                    name:this.relation
+                    name:this.relation,
+                    symbol:["circle","circle"]
                 }
                 console.log(data)
                 this.addRelateById(data)
@@ -129,7 +137,7 @@
 </script>
 
 <style scoped>
-    @import '../assets/main.css';
+    @import '../assets/bar.css';
     .w3-sidebar{
 		/* margin-top: 11%; */
         font-size: 16px;

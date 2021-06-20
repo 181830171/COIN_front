@@ -13,7 +13,8 @@ import{
     searchNodesAPI,
     getSearchHistoriesAPI,
     loginAPI,
-    registerAPI
+    registerAPI,
+    getAnswerAPI
 }from '../../api/NeoEntity.js'
 const NeoEntity={
     state:{
@@ -60,7 +61,8 @@ const NeoEntity={
             name:""
         },
         searchResult:[],
-        searchHistories:[]
+        searchHistories:[],
+        questionAnswer:""
     },
     mutations:{
         set_addNeoEntityParams:function(state,data){
@@ -106,7 +108,11 @@ const NeoEntity={
 		// 更新symbolSize
 		set_currentNeoEntitySymbolSize:function(state, data){
 			state.currentNeoEntity.symbolSize = data
-		}
+		},
+		//问题回答
+        set_questionAnswer:function(state,data){
+            state.questionAnswer=data;
+        }
     },
     actions:{
         getListAll: async ({commit})=>{
@@ -130,7 +136,7 @@ const NeoEntity={
             }
         },
         addRelateById: async ({state,commit,dispatch},data)=>{
-            const res=await addRelateByIdAPI(data.from,data.to,data.isSolid,data.des,data.name)
+            const res=await addRelateByIdAPI(data.from,data.to,data.isSolid,data.des,data.name,data.symbol)
             if(res){
                 dispatch('getListAll')
                 // console.log("成功")
@@ -282,6 +288,7 @@ const NeoEntity={
                 commit('set_searchResult',[])
                 swal('系统提示','未找到相关节点','error')
             }
+            return res
         },
         //获得搜索历史记录
         getSearchHistories:async({state,commit})=>{
@@ -313,6 +320,17 @@ const NeoEntity={
             }else{
                 swal('失败','用户名重复','error')
             }
+        },
+        //智能问答
+        getAnswer:async({commit},question)=>{
+            const res=await getAnswerAPI(question)
+            if(res){
+                console.log(res)
+            }else{
+                console.log("回答不出来")
+                console.log(res.content)
+            }
+            return res
         }
     }
 }

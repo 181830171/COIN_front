@@ -37,11 +37,16 @@ export function getNeoEntityByIdAPI(id){
 }
 
 //添加关系
-export function addRelateByIdAPI(from,to,isSolid,des,name){
+export function addRelateByIdAPI(from,to,isSolid,des,name,symbol){
     return axios({
         url:'/addRelates',
         method:'POST',
-        params:{from:from,to:to,isSolid:isSolid,des:des,name:name}
+        params:{from:from,to:to,isSolid:isSolid,des:des,name:name,symbol:symbol},
+        paramsSerializer: function(params) {
+            const res = qs.stringify(params, {arrayFormat:'repeat'} );
+            console.log('res',res);
+            return res;
+        }
     })
 }
 
@@ -144,6 +149,14 @@ export function registerAPI(data){
         url:`/register`,
         method:'POST',
         data
+    })
+}
+//智能问答
+export function getAnswerAPI(question){
+    return axios({
+        url:`/getAnswer`,
+        method:'POST',
+        params:{question:question}
     })
 }
 

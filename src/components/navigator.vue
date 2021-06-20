@@ -20,7 +20,7 @@
 	<div id="upper_edit_bar" class="w3-container w3-sand">
 		<upper-edit-bar ref="upper_edit_side"></upper-edit-bar>
 	</div>
-    <sidebar id="side" :seen="isAddSeen" ref="sidebar"/>
+    <sidebar id="side" :seen="isAddSeen" ref="sidebar" style="position: fixed;-webkit-overflow-scrolling:touch"/>
     <editbar ref="editside" :seen="isEditSeen" />
 	</div>
 </template>
@@ -28,8 +28,7 @@
 <script>
     import sidebar from "./sidebar";
     import Editbar from "./editbar";
-    import {Input,Space} from 'ant-design-vue'
-    import {AudioOutLined} from '@ant-design/icons-vue'
+    import $ from "jquery";
     import {mapActions,mapGetters} from 'vuex';
     import {toRaw} from "@vue/reactivity";
 	import upperEditBar from "./upperEditBar.vue";
@@ -59,7 +58,7 @@
                 this.$router.push('/home')
             },
             edit() {
-                // this.isEditSeen = true;
+                this.isEditSeen = true;
                 this.isAddSeen = false;
             },
             export2JSON() {
@@ -88,34 +87,32 @@
                     alert("请输入搜索内容")
                 } else {
 
-                    this.searchNodes(this.searchText);
+                    const result=this.searchNodes(this.searchText);
                     this.searchText = ""
 
 					setTimeout(function(){
 						_this.getSearchHistories()
 					},1000)
+                    swal("系统提示","搜索需要花费3s左右的时间，请耐心等待","warning")
                     setTimeout(function () {
-                        console.log("histories",toRaw(_this.$store.state.NeoEntity).searchHistories)
-                        _this.searchResult=toRaw(_this.$store.state.NeoEntity).searchResult
-                        _this.searchHistoryList=toRaw(_this.$store.state.NeoEntity).searchHistories
-                        if(toRaw(_this.searchResult).length!=0){
-                            _this.$parent.isSeen=false
-                            _this.$parent.searchDisplaySeen=true
-                            _this.$parent.draw1(toRaw(_this.$store.state.NeoEntity).searchResult,toRaw(_this.$store.state.NeoEntity).allEntitiesAndRelations.links,toRaw(_this.$store.state.NeoEntity).allEntitiesAndRelations.categories)
-                        }else{
-                            console.log("this")
-                        }
-                    }, 2000)
+                        result.then(resdata=>{
+                            if(resdata.length!=0){
+                                // _this.$parent.isSeen=false
+                                // _this.$parent.searchDisplaySeen=true
+                                _this.$parent.draw1(resdata,toRaw(_this.$store.state.NeoEntity).allEntitiesAndRelations.links,toRaw(_this.$store.state.NeoEntity).allEntitiesAndRelations.categories)
+                            }
+                        })
+                    }, 3000)
 
                 }
             }
         },
-        mounted(){
+        mounted() {
             this.getSearchHistories()
-            this.searchHistoryList=toRaw(this.$store.state.NeoEntity).searchHistories
-        },
-
+            this.searchHistoryList = toRaw(this.$store.state.NeoEntity).searchHistories
+        }
     }
+
 </script>
 
 <style scoped>
