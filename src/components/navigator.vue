@@ -102,7 +102,7 @@
                                 _this.$parent.draw1(resdata,toRaw(_this.$store.state.NeoEntity).allEntitiesAndRelations.links,toRaw(_this.$store.state.NeoEntity).allEntitiesAndRelations.categories)
                             }
                         })
-                    }, 3000)
+                    }, 2000)
 
                 }
             }

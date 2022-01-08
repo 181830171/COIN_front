@@ -146,8 +146,8 @@ export default {
           series: [{
             id:'COIN',
             type: 'graph', // 类型:关系图
-            //layout: 'force', //图的布局，类型为力导图
-            layout:'circular',//环形布局
+            layout: 'force', //图的布局，类型为力导图
+            // layout:'circular',//环形布局
             //layout: 'none',
             symbolSize: 50, // 调整节点的大小
             roam: true, // 是否开启鼠标缩放和平移漫游。默认不开启。如果只想要开启缩放或者平移,可以设置成 'scale' 或者 'move'。设置成 true 为都开启
@@ -155,7 +155,7 @@ export default {
             edgeSymbolSize: [2, 10],
             smooth: false,   //关键点，为true是不支持虚线的，实线就用true
             nodeScaleRatio:0.5,
-            zoom:1,
+            zoom:0.5,
             // center:['50%','50%'],
             edgeLabel: {
               normal: {
@@ -355,7 +355,7 @@ export default {
       }
       function changeType(){
         var layout=myChart.getOption().series[0].layout
-        if(layout=="circular"){
+        if(layout=="force"){
           myChart.setOption({
             series:[{
               layout:'none',
@@ -367,8 +367,8 @@ export default {
         }else{
           myChart.setOption({
             series:[{
-              layout:'circular',
-              zoom:1,
+              layout:'force',
+              zoom:0.5,
             }],
             graphic:[],
           })
